@@ -24,18 +24,40 @@ function getMinimumFlight(flights) {
 }
 
 router.post('/dialog', (request, response) => {
+  var intent = request.body.queryResult.intent.displayName
+  if (intent === "option1-flightsearch - more - more"){
+    var destination =  request.body.queryResult.parameters.geodestination
+    var source =  request.body.queryResult.outputContexts.parameters.geosource
+  return response.json({
+    "fulfillmentText": destination +"        "+ source
+  });
 
-  console.log(request.body)
-
-  var speech =
+  }
+  else if (intent === "Default Welcome Intent"){
+    var speech =
     request.body.queryResult &&
     request.body.queryResult.parameters &&
     request.body.queryResult.parameters.echoText
       ? request.body.queryResult.parameters.echoText
       : "Seems like some problem. Speak again.";
-  return response.json({
+    return response.json({
     "fulfillmentText": speech
   });
+  }
+
+
+
+
+
+
+
+
+
+
+  
+  console.log(request.body)
+
+  
 });
 
 
