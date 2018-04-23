@@ -34,7 +34,7 @@ router.post('/dialog', (request, response) => {
       ? request.body.result.parameters.echoText
       : "Seems like some problem. Speak again.";
   return response.json({
-    "fulfillmentText": "This is a text response"
+    "fulfillmentText": speech
   });
 });
 
