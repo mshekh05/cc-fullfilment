@@ -30,7 +30,7 @@ router.post('/dialog', (request, response) => {
   var intent = request.body.queryResult.intent.displayName
   if (intent === "option1-flightsearch - more - more"){
     var destination =  request.body.queryResult.parameters.geodestination
-    var source =  request.body.queryResult.outputContexts.parameters.geosource
+    var source =  request.body.queryResult.outputContexts[0].parameters.geosource
   return response.json({
     "fulfillmentText": destination +"        "+ source
   });
@@ -51,8 +51,10 @@ router.post('/dialog', (request, response) => {
 } catch (error) {
   console.log(request.body.queryResult)
   console.log(error)
-  console.log( request.body.queryResult.outputContexts[0])
-  console.log(request.body.queryResult.outputContexts[1])
+  return response.json({
+    "fulfillmentText": "Seems like some problem. Speak again."
+  });
+  
 
 
     
