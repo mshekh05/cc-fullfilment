@@ -14,7 +14,8 @@ router.get('/', (req, res) => {
 function getMinimumFlight(flights) {
   var minFlight = flights[0];
   var flight = 1;
-  while (flight <= 5) {
+  // while (flight <= 5) {
+    for(flight in flights){
     var curMin = minFlight.fare.grossamount
     if (curMin > flights[flight].fare.grossamount) {
       minFlight = flights[flight]
@@ -30,7 +31,7 @@ router.post('/dialog', (request, response) => {
 
     var intent = request.body.queryResult.intent.displayName
     if (intent === "option1-flightsearch - more - more") {
-      
+      // Variable Declaration
       var destination = request.body.queryResult.parameters.geodestination
       var source = request.body.queryResult.outputContexts[0].parameters.geosource
       var sourceIata = airports.findWhere({ city: source }).get('iata')
@@ -48,7 +49,10 @@ router.post('/dialog', (request, response) => {
         .then(res => {
 
           // res.send(getMinimumFlight(res.data.data.onwardflights))
-          minFlightCost = res.data.data.onwardflights[0].fare.grossamount
+
+          var minFlight =getMinimumFlight(res.data.data.onwardflights)
+          var minFlightCost = minFlight.fare.grossamount
+          // minFlightCost = res.data.data.onwardflights[0].fare.grossamount
           return response.json({
             "fulfillmentText": destination + "        " + source + "     " + minFlightCost
           });
