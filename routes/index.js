@@ -23,6 +23,30 @@ function getMinimumFlight(flights) {
   return minFlight
 }
 
+router.post('/dialog', (request, response) => {
+
+  console.log(request.body)
+
+  var speech =
+    request.body.result &&
+    request.body.result.parameters &&
+    request.body.result.parameters.echoText
+      ? request.body.result.parameters.echoText
+      : "Seems like some problem. Speak again.";
+  return response.json({
+    speech: speech,
+    displayText: speech,
+    source: "webhook-echo-sample"
+  });
+});
+
+
+
+
+
+
+
+
 
 
 
