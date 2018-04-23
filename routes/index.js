@@ -31,7 +31,7 @@ router.post('/dialog', (request, response) => {
     request.body.queryResult &&
     request.body.queryResult.parameters &&
     request.body.queryResult.parameters.echoText
-      ? request.body.result.parameters.echoText
+      ? request.body.queryResult.parameters.echoText
       : "Seems like some problem. Speak again.";
   return response.json({
     "fulfillmentText": speech
