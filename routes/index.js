@@ -24,6 +24,9 @@ function getMinimumFlight(flights) {
 }
 
 router.post('/dialog', (request, response) => {
+  try {
+    
+  
   var intent = request.body.queryResult.intent.displayName
   if (intent === "option1-flightsearch - more - more"){
     var destination =  request.body.queryResult.parameters.geodestination
@@ -45,7 +48,13 @@ router.post('/dialog', (request, response) => {
   });
   }
 
+} catch (error) {
+  console.log(request.body.queryResult)
+  console.log(error)
 
+
+    
+}
 
 
 
@@ -55,7 +64,7 @@ router.post('/dialog', (request, response) => {
 
 
   
-  console.log(request.body)
+ 
 
   
 });
