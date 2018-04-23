@@ -2,11 +2,32 @@ const express = require('express');
 const router = express.Router();
 var airports = require('airport-codes');
 const axios = require('axios');
+var admin = require("firebase-admin");
+const functions = require('firebase-functions');
+admin.initializeApp(functions.config().firebase);
+var db = admin.firestore();
 // const url = 'https://developer.goibibo.com/api/search/?app_id=738f476c&app_key=f680503962623e838c52be41f0094b69&source='+source+'&destination='+destination+'&dateofdeparture=20180719&seatingclass=E&adults=1&children=0&infants=0&counter=100'
 
 /* GET home page. */
+
+function getUser() {
+  const userData = {
+          id: "user123",
+          firstName: "Jane",
+          lastName: "Middleton"
+  };
+  return db.collection('alerts').doc('user123').set(userData).then(() => {
+          'new user data added to db'
+  })
+}
 router.get('/', (req, res) => {
   res.render('index', { title: 'Express' });
+
+});
+router.get('/insert', (req, res) => {
+ 
+  res.send(getUser())
+
 });
 
 
@@ -20,7 +41,7 @@ function getMinimumFlight(flights) {
     if (curMin > flights[flight].fare.grossamount) {
       minFlight = flights[flight]
     }
-    flight += 1;
+    // flight += 1;
   }
   return minFlight
 }
@@ -54,7 +75,16 @@ router.post('/dialog', (request, response) => {
           var minFlightCost = minFlight.fare.grossamount
           // minFlightCost = res.data.data.onwardflights[0].fare.grossamount
           return response.json({
-            "fulfillmentText": destination + "        " + source + "     " + minFlightCost
+            "fulfillmentMessages": [
+              {
+                "card": {
+                  "title": "Price",
+                  "subtitle": "Cheapest Rate",
+                  "imageUri": "https://images.trvl-media.com/media/content/expus/graphics/launch/home/tvly/150324_flights-hero-image_1330x742.jpg",
+                  "text":destination + "        " + source + "     " + minFlightCost
+                }
+              }
+            ]
           });
         })
         .catch(error => {
