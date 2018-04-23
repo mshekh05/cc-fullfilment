@@ -34,9 +34,7 @@ router.post('/dialog', (request, response) => {
       ? request.body.result.parameters.echoText
       : "Seems like some problem. Speak again.";
   return response.json({
-    speech: speech,
-    displayText: speech,
-    source: "webhook-echo-sample"
+    "fulfillmentText": "This is a text response"
   });
 });
 
