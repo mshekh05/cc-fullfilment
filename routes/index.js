@@ -28,9 +28,9 @@ router.post('/dialog', (request, response) => {
   console.log(request.body)
 
   var speech =
-    request.body.result &&
-    request.body.result.parameters &&
-    request.body.result.parameters.echoText
+    request.body.queryResult &&
+    request.body.queryResult.parameters &&
+    request.body.queryResult.parameters.echoText
       ? request.body.result.parameters.echoText
       : "Seems like some problem. Speak again.";
   return response.json({
