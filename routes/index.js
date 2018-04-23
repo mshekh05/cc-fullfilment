@@ -51,6 +51,8 @@ router.post('/dialog', (request, response) => {
 } catch (error) {
   console.log(request.body.queryResult)
   console.log(error)
+  console.log( request.body.queryResult.outputContexts[0])
+  console.log(request.body.queryResult.outputContexts[1])
 
 
     
