@@ -43,10 +43,12 @@ router.post('/dialog', (request, response) => {
       }
 
       const url = 'https://developer.goibibo.com/api/search/?app_id=738f476c&app_key=f680503962623e838c52be41f0094b69&source=' + sourceIata + '&destination=' + destinationIata + '&dateofdeparture=20180719&seatingclass=E&adults=1&children=0&infants=0&counter=100'
+      console.log(url)
       axios.get(url)
         .then(res => {
+
           // res.send(getMinimumFlight(res.data.data.onwardflights))
-          minFlightCost = response.data.data.onwardflights[0].fare.grossamount
+          minFlightCost = res.data.data.onwardflights[0].fare.grossamount
           return response.json({
             "fulfillmentText": destination + "        " + source + "     " + minFlightCost
           });
