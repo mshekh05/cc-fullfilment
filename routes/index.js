@@ -75,6 +75,7 @@ router.post('/dialog', (request, response) => {
           var minFlightCost = minFlight.fare.grossamount
           // minFlightCost = res.data.data.onwardflights[0].fare.grossamount
           return response.json({
+            "fulfillmentText": destination + "        " + source + "     " + minFlightCost,
             "fulfillmentMessages": [
               {
                 "card": {
