@@ -12,12 +12,12 @@ var db = admin.firestore();
 
 function getUser() {
   const userData = {
-          id: "user123",
-          firstName: "Jane",
-          lastName: "Middleton"
+    id: "user123",
+    firstName: "Jane",
+    lastName: "Middleton"
   };
   return db.collection('alerts').doc('user123').set(userData).then(() => {
-          'new user data added to db'
+    'new user data added to db'
   })
 }
 router.get('/', (req, res) => {
@@ -25,7 +25,7 @@ router.get('/', (req, res) => {
 
 });
 router.get('/insert', (req, res) => {
- 
+
   res.send(getUser())
 
 });
@@ -36,7 +36,7 @@ function getMinimumFlight(flights) {
   var minFlight = flights[0];
   var flight = 1;
   // while (flight <= 5) {
-    for(flight in flights){
+  for (flight in flights) {
     var curMin = minFlight.fare.grossamount
     if (curMin > flights[flight].fare.grossamount) {
       minFlight = flights[flight]
@@ -71,7 +71,7 @@ router.post('/dialog', (request, response) => {
 
           // res.send(getMinimumAFlight(res.data.data.onwardflights))
 
-          var minFlight =getMinimumFlight(res.data.data.onwardflights)
+          var minFlight = getMinimumFlight(res.data.data.onwardflights)
           var minFlightCost = minFlight.fare.grossamount
           // minFlightCost = res.data.data.onwardflights[0].fare.grossamount
           return response.json({
@@ -81,45 +81,50 @@ router.post('/dialog', (request, response) => {
                 "card": {
                   // "text":destination + "        " + source + "     " + minFlightCost,
                   "title": destination + " to " + source,
-                  "subtitle": "Price: "+minFlightCost,
+                  "subtitle": "Price: " + minFlightCost,
                   "imageUri": "https://images.trvl-media.com/media/content/expus/graphics/launch/home/tvly/150324_flights-hero-image_1330x742.jpg",
-                  
+
                 }
               }
             ]
             ,
 
-"payload": {
-  "google": {
-    "expectUserResponse": true,
-    "richResponse": {
-      "items": [
-        {
-          "simpleResponse": {
-            "textToSpeech": "We found the cheapest flight for you"
-          }
-        },
-        {
-          "basicCard":{
-              // "buttons":[
-              //     {
-              //         "title":"Button Title",
-              //         "openUrlAction":{
-              //             "url":"https://images.trvl-media.com/media/content/expus/graphics/launch/home/tvly/150324_flights-hero-image_1330x742.jpg"
-              //         }
-              //     }
-              // ],
-              "formattedText":"Price: "+minFlightCost,
-              "image":{
-                  "url":"https://images.trvl-media.com/media/content/expus/graphics/launch/home/tvly/150324_flights-hero-image_1330x742.jpg",
-                  "accessibilityText":"Accessibility text describing the image"
-              },
-              "title":destination + " to " + source
-          }
-      }
-      ]
-    }
-  }}
+            "payload": {
+              "google": {
+                "expectUserResponse": true,
+                "richResponse": {
+                  "items": [
+                    {
+                      "simpleResponse": {
+                        "textToSpeech": "We found the cheapest flight for you"
+                      }
+                    },
+                    {
+                      "basicCard": {
+                        // "buttons":[
+                        //     {
+                        //         "title":"Button Title",
+                        //         "openUrlAction":{
+                        //             "url":"https://images.trvl-media.com/media/content/expus/graphics/launch/home/tvly/150324_flights-hero-image_1330x742.jpg"
+                        //         }
+                        //     }
+                        // ],
+                        "formattedText": "Price: " + minFlightCost,
+                        "image": {
+                          "url": "https://images.trvl-media.com/media/content/expus/graphics/launch/home/tvly/150324_flights-hero-image_1330x742.jpg",
+                          "accessibilityText": "Accessibility text describing the image"
+                        },
+                        "title": destination + " to " + source
+                      }
+                    }, {
+                      "simpleResponse": {
+                        "textToSpeech": "Do You Want to Create a new alert"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
 
 
 
@@ -165,21 +170,23 @@ router.post('/dialog', (request, response) => {
 
 router.get('/minflight', (req, res) => {
   // var source1 = ;
-console.log(req.query)
-  var source = airports.findWhere({ city: req.query.source }).get('iata')
-  var destination = airports.findWhere({ city: req.query.destination }).get('iata')
+  console.log(req.query)
+  // var source = airports.findWhere({ city: req.query.source }).get('iata')
+  // var destination = airports.findWhere({ city: req.query.destination }).get('iata')
+  var source = req.query.source
+  var destination = req.query.destination
   var date = req.query.date
   if (source == '' || destination == '') {
     res.send("invalid input")
   }
-  const url = 'https://developer.goibibo.com/api/search/?app_id=738f476c&app_key=f680503962623e838c52be41f0094b69&source=' + source + '&destination=' + destination + '&dateofdeparture='+date+'&seatingclass=E&adults=1&children=0&infants=0&counter=100'
+  const url = 'https://developer.goibibo.com/api/search/?app_id=738f476c&app_key=f680503962623e838c52be41f0094b69&source=' + source + '&destination=' + destination + '&dateofdeparture=' + date + '&seatingclass=E&adults=1&children=0&infants=0&counter=100'
 
 
   axios.get(url)
     .then(response => {
-      var minFlight =getMinimumFlight(response.data.data.onwardflights)
+      var minFlight = getMinimumFlight(response.data.data.onwardflights)
       res.json({
-        price:minFlight.fare.grossamount
+        price: minFlight.fare.grossamount
       })
 
     })
