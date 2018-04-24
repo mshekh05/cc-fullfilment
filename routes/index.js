@@ -80,8 +80,8 @@ router.post('/dialog', (request, response) => {
               {
                 "card": {
                   // "text":destination + "        " + source + "     " + minFlightCost,
-                  "title": "Price",
-                  "subtitle": "Cheapest Rate",
+                  "title": destination + " to " + source,
+                  "subtitle": "Price: "+minFlightCost,
                   "imageUri": "https://images.trvl-media.com/media/content/expus/graphics/launch/home/tvly/150324_flights-hero-image_1330x742.jpg",
                   
                 }
