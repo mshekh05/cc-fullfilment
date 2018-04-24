@@ -96,19 +96,19 @@ router.post('/dialog', (request, response) => {
       "items": [
         {
           "simpleResponse": {
-            "textToSpeech": "this is a simple response"
+            "textToSpeech": "We found the cheapest flight for you"
           }
         },
         {
           "basicCard":{
-              "buttons":[
-                  {
-                      "title":"Button Title",
-                      "openUrlAction":{
-                          "url":"https://images.trvl-media.com/media/content/expus/graphics/launch/home/tvly/150324_flights-hero-image_1330x742.jpg"
-                      }
-                  }
-              ],
+              // "buttons":[
+              //     {
+              //         "title":"Button Title",
+              //         "openUrlAction":{
+              //             "url":"https://images.trvl-media.com/media/content/expus/graphics/launch/home/tvly/150324_flights-hero-image_1330x742.jpg"
+              //         }
+              //     }
+              // ],
               "formattedText":"Price: "+minFlightCost,
               "image":{
                   "url":"https://images.trvl-media.com/media/content/expus/graphics/launch/home/tvly/150324_flights-hero-image_1330x742.jpg",
@@ -117,7 +117,8 @@ router.post('/dialog', (request, response) => {
               "title":destination + " to " + source
           }
       }
-      ]
+      ],
+      "suggestions":"Creat an Alert"
     }
   }}
 
