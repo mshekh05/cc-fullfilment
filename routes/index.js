@@ -142,29 +142,29 @@ router.post('/dialog', (request, response) => {
 
 
 
-router.get('/:source-:destination', (req, res) => {
-  var source1 = req.params.source;
-
-  var source = airports.findWhere({ city: source1 }).get('iata')
-
-
-  var destination = airports.findWhere({ city: req.params.destination }).get('iata')
+router.get('/minflight', (req, res) => {
+  // var source1 = ;
+console.log(req.query)
+  var source = airports.findWhere({ city: req.query.source }).get('iata')
+  var destination = airports.findWhere({ city: req.query.destination }).get('iata')
+  var date = req.query.date
   if (source == '' || destination == '') {
     res.send("invalid input")
   }
-  const url = 'https://developer.goibibo.com/api/search/?app_id=738f476c&app_key=f680503962623e838c52be41f0094b69&source=' + source + '&destination=' + destination + '&dateofdeparture=20180719&seatingclass=E&adults=1&children=0&infants=0&counter=100'
+  const url = 'https://developer.goibibo.com/api/search/?app_id=738f476c&app_key=f680503962623e838c52be41f0094b69&source=' + source + '&destination=' + destination + '&dateofdeparture='+date+'&seatingclass=E&adults=1&children=0&infants=0&counter=100'
 
 
   axios.get(url)
     .then(response => {
-      // res.send(JSON.stringify(response))
-      // console.log(response.data.data);
+      var minFlight =getMinimumFlight(response.data.data.onwardflights)
+      res.json({
+        price:minFlight.fare.grossamount
+      })
 
-
-      res.send(getMinimumFlight(response.data.data.onwardflights))
     })
     .catch(error => {
       console.log(error);
+      res.send("Error")
     });
 
 
