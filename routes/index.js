@@ -75,7 +75,7 @@ router.post('/dialog', (request, response) => {
           var minFlightCost = minFlight.fare.grossamount
           // minFlightCost = res.data.data.onwardflights[0].fare.grossamount
           return response.json({
-            "fulfillmentText": "We found the below flight for you",
+            // "fulfillmentText": "We found the below flight for you",
             "fulfillmentMessages": [
               {
                 "card": {
@@ -87,6 +87,24 @@ router.post('/dialog', (request, response) => {
                 }
               }
             ]
+            ,
+
+"payload": {
+  "google": {
+    "expectUserResponse": true,
+    "richResponse": {
+      "items": [
+        {
+          "simpleResponse": {
+            "textToSpeech": "this is a simple response"
+          }
+        }
+      ]
+    }
+  }}
+
+
+
           });
         })
         .catch(error => {
