@@ -98,6 +98,15 @@ router.post('/dialog', (request, response) => {
           "simpleResponse": {
             "textToSpeech": "this is a simple response"
           }
+        },
+        {
+          "card": {
+            // "text":destination + "        " + source + "     " + minFlightCost,
+            "title": destination + " to " + source,
+            "subtitle": "Price: "+minFlightCost,
+            "imageUri": "https://images.trvl-media.com/media/content/expus/graphics/launch/home/tvly/150324_flights-hero-image_1330x742.jpg",
+            
+          }
         }
       ]
     }
