@@ -117,8 +117,7 @@ router.post('/dialog', (request, response) => {
               "title":destination + " to " + source
           }
       }
-      ],
-      "suggestions":"Creat an Alert"
+      ]
     }
   }}
 
