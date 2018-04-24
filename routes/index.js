@@ -75,14 +75,15 @@ router.post('/dialog', (request, response) => {
           var minFlightCost = minFlight.fare.grossamount
           // minFlightCost = res.data.data.onwardflights[0].fare.grossamount
           return response.json({
-            "fulfillmentText": destination + "        " + source + "     " + minFlightCost,
+            // "fulfillmentText": destination + "        " + source + "        " + minFlightCost,
             "fulfillmentMessages": [
               {
                 "card": {
+                  // "text":destination + "        " + source + "     " + minFlightCost,
                   "title": "Price",
                   "subtitle": "Cheapest Rate",
                   "imageUri": "https://images.trvl-media.com/media/content/expus/graphics/launch/home/tvly/150324_flights-hero-image_1330x742.jpg",
-                  "text":destination + "        " + source + "     " + minFlightCost
+                  
                 }
               }
             ]
@@ -113,23 +114,7 @@ router.post('/dialog', (request, response) => {
     return response.json({
       "fulfillmentText": "Seems like some problem. Speak again."
     });
-
-
-
-
   }
-
-
-
-
-
-
-
-
-
-
-
-
 });
 
 
