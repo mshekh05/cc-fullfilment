@@ -100,14 +100,23 @@ router.post('/dialog', (request, response) => {
           }
         },
         {
-          "card": {
-            // "text":destination + "        " + source + "     " + minFlightCost,
-            "title": destination + " to " + source,
-            "subtitle": "Price: "+minFlightCost,
-            "imageUri": "https://images.trvl-media.com/media/content/expus/graphics/launch/home/tvly/150324_flights-hero-image_1330x742.jpg",
-            
+          "basicCard":{
+              "buttons":[
+                  {
+                      "title":"Button Title",
+                      "openUrlAction":{
+                          "url":"https://some.url"
+                      }
+                  }
+              ],
+              "formattedText":"Some text",
+              "image":{
+                  "url":"http://some_image.jpg",
+                  "accessibilityText":"Accessibility text describing the image"
+              },
+              "title":"Card Title"
           }
-        }
+      }
       ]
     }
   }}
