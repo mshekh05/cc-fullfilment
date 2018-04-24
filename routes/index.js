@@ -105,16 +105,16 @@ router.post('/dialog', (request, response) => {
                   {
                       "title":"Button Title",
                       "openUrlAction":{
-                          "url":"https://some.url"
+                          "url":"https://images.trvl-media.com/media/content/expus/graphics/launch/home/tvly/150324_flights-hero-image_1330x742.jpg"
                       }
                   }
               ],
-              "formattedText":"Some text",
+              "formattedText":"Price: "+minFlightCost,
               "image":{
-                  "url":"http://some_image.jpg",
+                  "url":"https://images.trvl-media.com/media/content/expus/graphics/launch/home/tvly/150324_flights-hero-image_1330x742.jpg",
                   "accessibilityText":"Accessibility text describing the image"
               },
-              "title":"Card Title"
+              "title":destination + " to " + source
           }
       }
       ]
