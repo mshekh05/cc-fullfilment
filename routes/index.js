@@ -137,6 +137,15 @@ router.post('/dialog', (request, response) => {
           });
         });
     }
+    else if(intent === "create-alert - custom"){
+      var destination = request.body.queryResult.parameters.geo-dest
+      var source = request.body.queryResult.parameters.geo-source
+      var date = request.body.queryResult.parameters.date
+      return response.json({
+        "fulfillmentText": destination +"lololol " + source+"lololol " + date
+      });
+
+    }
     else if (intent === "Default Welcome Intent") {
       var speech =
         request.body.queryResult &&
