@@ -137,6 +137,41 @@ router.post('/dialog', (request, response) => {
           });
         });
     }
+    else if (intent == "setup_push"){
+return response.json(
+  {
+    "conversationToken": "{\"state\":null,\"data\":{}}",
+    "expectUserResponse": true,
+    "expectedInputs": [
+      {
+        "inputPrompt": {
+          "initialPrompts": [
+            {
+              "textToSpeech": "PLACEHOLDER_FOR_PERMISSION"
+            }
+          ],
+          "noInputPrompts": []
+        },
+        "possibleIntents": [
+          {
+            "intent": "actions.intent.PERMISSION",
+            "inputValueData": {
+              "@type": "type.googleapis.com/google.actions.v2.PermissionValueSpec",
+              "optContext": "To deliver your order",
+              "permissions": [
+                "NAME",
+                "DEVICE_PRECISE_LOCATION"
+              ]
+            }
+          }
+        ]
+      }
+    ]
+  }
+
+
+)
+    }
     else if(intent === "create-alert - custom"){
       var destination = request.body.queryResult.parameters.geodest
       var source = request.body.queryResult.parameters.geosource
