@@ -141,18 +141,7 @@ router.post('/dialog', (request, response) => {
 return response.json(
   {
     // "fulfillmentText": "We found the below flight for you",
-    "fulfillmentMessages": [
-      {
-        "card": {
-          // "text":destination + "        " + source + "     " + minFlightCost,
-          "title": destination + " to " + source,
-          "subtitle": "Price: " + minFlightCost,
-          "imageUri": "https://images.trvl-media.com/media/content/expus/graphics/launch/home/tvly/150324_flights-hero-image_1330x742.jpg",
-
-        }
-      }
-    ]
-    ,
+    
 
     "payload": {
       "google": {
