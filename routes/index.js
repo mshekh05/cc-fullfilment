@@ -140,34 +140,58 @@ router.post('/dialog', (request, response) => {
     else if (intent == "setup_push"){
 return response.json(
   {
-    // "conversationToken": "{\"state\":null,\"data\":{}}",
-    "expectUserResponse": true,
-    "expectedInputs": [
+    // "fulfillmentText": "We found the below flight for you",
+    "fulfillmentMessages": [
       {
-        "inputPrompt": {
-          "initialPrompts": [
-            {
-              "textToSpeech": "PLACEHOLDER_FOR_PERMISSION"
-            }
-          ],
-          "noInputPrompts": []
-        },
-        "possibleIntents": [
+        "card": {
+          // "text":destination + "        " + source + "     " + minFlightCost,
+          "title": destination + " to " + source,
+          "subtitle": "Price: " + minFlightCost,
+          "imageUri": "https://images.trvl-media.com/media/content/expus/graphics/launch/home/tvly/150324_flights-hero-image_1330x742.jpg",
+
+        }
+      }
+    ]
+    ,
+
+    "payload": {
+      "google": {
+        // "conversationToken": "{\"state\":null,\"data\":{}}",
+        "expectUserResponse": true,
+        "expectedInputs": [
           {
-            "intent": "actions.intent.PERMISSION",
-            "inputValueData": {
-              "@type": "type.googleapis.com/google.actions.v2.PermissionValueSpec",
-              "optContext": "To deliver your order",
-              "permissions": [
-                "NAME",
-                "DEVICE_PRECISE_LOCATION"
-              ]
-            }
+            "inputPrompt": {
+              "initialPrompts": [
+                {
+                  "textToSpeech": "PLACEHOLDER_FOR_PERMISSION"
+                }
+              ],
+              "noInputPrompts": []
+            },
+            "possibleIntents": [
+              {
+                "intent": "actions.intent.PERMISSION",
+                "inputValueData": {
+                  "@type": "type.googleapis.com/google.actions.v2.PermissionValueSpec",
+                  "optContext": "To deliver your order",
+                  "permissions": [
+                    "NAME",
+                    "DEVICE_PRECISE_LOCATION"
+                  ]
+                }
+              }
+            ]
           }
         ]
       }
-    ]
+    }
+
+
+
   }
+
+
+  
 
 
 )
