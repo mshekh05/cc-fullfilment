@@ -140,7 +140,7 @@ router.post('/dialog', (request, response) => {
     else if (intent == "setup_push"){
 return response.json(
   {
-    "conversationToken": "{\"state\":null,\"data\":{}}",
+    // "conversationToken": "{\"state\":null,\"data\":{}}",
     "expectUserResponse": true,
     "expectedInputs": [
       {
