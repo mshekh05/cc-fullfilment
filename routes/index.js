@@ -220,7 +220,7 @@ router.post("/dialog", (request, response) => {
                     items: [
                       {
                         simpleResponse: {
-                          textToSpeech: "You start receiving email on "+  res.data.email
+                          textToSpeech: "You will start receiving email on "+  res.data.email +"! Good Bye !"
                         }
                       }
                     ]
