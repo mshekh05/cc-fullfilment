@@ -169,6 +169,7 @@ router.post("/dialog", (request, response) => {
       var destination = request.body.queryResult.parameters.geodest;
       var source = request.body.queryResult.parameters.geosource;
       var date = request.body.queryResult.parameters.date;
+      date = date.substring(0,10).replace("-","")
       // console.log()
       console.log("*********************")
       // console.log(request.body)
