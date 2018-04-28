@@ -74,9 +74,9 @@ router.post("/dialog", (request, response) => {
         "&dateofdeparture="+
         date+
         "&seatingclass=E&adults=1&children=0&infants=0&counter=100";
-        var accessToken = request.body.originalDetectIntentRequest.payload.user.accessToken
-        var userID = request.body.originalDetectIntentRequest.payload.user.userId
-      // console.log(url)
+        // var accessToken = request.body.originalDetectIntentRequest.payload.user.accessToken
+        // var userID = request.body.originalDetectIntentRequest.payload.user.userId
+      console.log(url)
       axios
         .get(url)
         .then(res => {
@@ -130,20 +130,24 @@ router.post("/dialog", (request, response) => {
                 }
               }
             }
-            // ,
-            // outputContexts:[
-            //   {
-            //     name:request.body.session+"/contexts/option1-flightsearch-more-more-followup",
-            //     "lifespanCount": 5,
-            //     "parameters": {
-            //       "source": ,
-            //       "destination":
-            //       "date":,
-            //       "price": ,
+            ,
+            outputContexts:[
+              {
+                name:request.body.session+"/contexts/option1-flightsearch-more-more-followup",
+                "lifespanCount": 5,
+                "parameters": {
+                  "source":sourceIata ,
+                  "destination":destinationIata,
+                  "date":date,
+                  "price":minFlightCost ,
+                  // "userid":userID,
+                  // "accesstoken":useremail
 
-            //     }
-            //   }
-            // ]
+
+
+                }
+              }
+            ]
           });
         })
         .catch(error => {
