@@ -54,7 +54,7 @@ router.post("/dialog", (request, response) => {
       var destination = request.body.queryResult.parameters.geodestination;
       var source =  request.body.queryResult.parameters.geosource;
       var date = request.body.queryResult.parameters.date;
-      date = date.substring(0,10).replace("-","")
+      date = date.substring(0,10).replace("-","").replace("-","")
       var sourceIata = airports.findWhere({ city: source }).get("iata");
       var destinationIata = airports
         .findWhere({ city: destination })
