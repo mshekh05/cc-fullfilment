@@ -51,102 +51,107 @@ router.post("/dialog", (request, response) => {
     if (intent === "option1-flightsearch -final") {
       // Variable Declaration
       console.log(request.body.queryResult)
-      // var destination = request.body.queryResult.parameters.geodestination;
-      // var source =
-      //   request.body.queryResult.outputContexts[0].parameters.geosource;
-      // var sourceIata = airports.findWhere({ city: source }).get("iata");
-      // var destinationIata = airports
-      //   .findWhere({ city: destination })
-      //   .get("iata");
+      var destination = request.body.queryResult.parameters.geodestination;
+      var source =  request.body.queryResult.parameters.geosource;
+      var date = request.body.queryResult.parameters.date;
+      date = date.substring(0,10).replace("-","")
+      var sourceIata = airports.findWhere({ city: source }).get("iata");
+      var destinationIata = airports
+        .findWhere({ city: destination })
+        .get("iata");
 
-      // if (sourceIata == "" || destinationIata == "") {
-      //   return response.json({
-      //     fulfillmentText: "Seems like some problem. Speak again."
-      //   });
-      // }
+      if (sourceIata == "" || destinationIata == "") {
+        return response.json({
+          fulfillmentText: "Seems like some problem. Speak again."
+        });
+      }
 
-      // const url =
-      //   "https://developer.goibibo.com/api/search/?app_id=738f476c&app_key=f680503962623e838c52be41f0094b69&source=" +
-      //   sourceIata +
-      //   "&destination=" +
-      //   destinationIata +
-      //   "&dateofdeparture=20180719&seatingclass=E&adults=1&children=0&infants=0&counter=100";
-      // // console.log(url)
-      // axios
-      //   .get(url)
-      //   .then(res => {
-      //     // res.send(getMinimumAFlight(res.data.data.onwardflights))
+      const url =
+        "https://developer.goibibo.com/api/search/?app_id=738f476c&app_key=f680503962623e838c52be41f0094b69&source=" +
+        sourceIata +
+        "&destination=" +
+        destinationIata +
+        "&dateofdeparture="+
+        date+
+        "&seatingclass=E&adults=1&children=0&infants=0&counter=100";
+        var accessToken = request.body.originalDetectIntentRequest.payload.user.accessToken
+        var userID = request.body.originalDetectIntentRequest.payload.user.userId
+      // console.log(url)
+      axios
+        .get(url)
+        .then(res => {
+          // res.send(getMinimumAFlight(res.data.data.onwardflights))
 
-      //     var minFlight = getMinimumFlight(res.data.data.onwardflights);
-      //     var minFlightCost = minFlight.fare.grossamount;
-      //     // minFlightCost = res.data.data.onwardflights[0].fare.grossamount
-      //     return response.json({
-      //       // "fulfillmentText": "We found the below flight for you",
-      //       fulfillmentMessages: [
-      //         {
-      //           card: {
-      //             // "text":destination + "        " + source + "     " + minFlightCost,
-      //             title: destination + " to " + source,
-      //             subtitle: "Price: " + minFlightCost,
-      //             imageUri:
-      //               "https://images.trvl-media.com/media/content/expus/graphics/launch/home/tvly/150324_flights-hero-image_1330x742.jpg"
-      //           }
-      //         }
-      //       ],
-      //       payload: {
-      //         google: {
-      //           expectUserResponse: true,
-      //           richResponse: {
-      //             items: [
-      //               {
-      //                 simpleResponse: {
-      //                   textToSpeech: "We found the cheapest flight for you"
-      //                 }
-      //               },
-      //               {
-      //                 basicCard: {
+          var minFlight = getMinimumFlight(res.data.data.onwardflights);
+          var minFlightCost = minFlight.fare.grossamount;
+          // minFlightCost = res.data.data.onwardflights[0].fare.grossamount
+          return response.json({
+            // "fulfillmentText": "We found the below flight for you",
+            fulfillmentMessages: [
+              {
+                card: {
+                  // "text":destination + "        " + source + "     " + minFlightCost,
+                  title: destination + " to " + source,
+                  subtitle: "Price: " + minFlightCost,
+                  imageUri:
+                    "https://images.trvl-media.com/media/content/expus/graphics/launch/home/tvly/150324_flights-hero-image_1330x742.jpg"
+                }
+              }
+            ],
+            payload: {
+              google: {
+                expectUserResponse: true,
+                richResponse: {
+                  items: [
+                    {
+                      simpleResponse: {
+                        textToSpeech: "We found the cheapest flight for you"
+                      }
+                    },
+                    {
+                      basicCard: {
                      
-      //                   formattedText: "Price: " + minFlightCost,
-      //                   image: {
-      //                     url:
-      //                       "https://images.trvl-media.com/media/content/expus/graphics/launch/home/tvly/150324_flights-hero-image_1330x742.jpg",
-      //                     accessibilityText:
-      //                       "Accessibility text describing the image"
-      //                   },
-      //                   title: destination + " to " + source
-      //                 }
-      //               },
-      //               {
-      //                 simpleResponse: {
-      //                   textToSpeech: "Do You Want to Create a new alert"
-      //                 }
-      //               }
-      //             ]
-      //           }
-      //         }
-      //       }
-      //       ,
-      //       outputContexts:[
-      //         {
-      //           name:request.body.session+"/contexts/option1-flightsearch-more-more-followup",
-      //           "lifespanCount": 5,
-      //           "parameters": {
-      //             "source": ,
-      //             "destination":
-      //             "date":,
-      //             "price": ,
+                        formattedText: "Price: " + minFlightCost,
+                        image: {
+                          url:
+                            "https://images.trvl-media.com/media/content/expus/graphics/launch/home/tvly/150324_flights-hero-image_1330x742.jpg",
+                          accessibilityText:
+                            "Accessibility text describing the image"
+                        },
+                        title: destination + " to " + source
+                      }
+                    },
+                    {
+                      simpleResponse: {
+                        textToSpeech: "Do You Want to Create a new alert"
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+            // ,
+            // outputContexts:[
+            //   {
+            //     name:request.body.session+"/contexts/option1-flightsearch-more-more-followup",
+            //     "lifespanCount": 5,
+            //     "parameters": {
+            //       "source": ,
+            //       "destination":
+            //       "date":,
+            //       "price": ,
 
-      //           }
-      //         }
-      //       ]
-      //     });
-      //   })
-      //   .catch(error => {
-      //     console.log(error);
-      //     return response.json({
-      //       fulfillmentText: "Seems like some problem. Speak again."
-      //     });
-      //   });
+            //     }
+            //   }
+            // ]
+          });
+        })
+        .catch(error => {
+          console.log(error);
+          return response.json({
+            fulfillmentText: "Seems like some problem. Speak again."
+          });
+        });
     } else if (intent == "setup_push") {
       return response.json({
         payload: {
@@ -180,8 +185,7 @@ router.post("/dialog", (request, response) => {
       date = date.substring(0,10).replace("-","")
 
       
-      var accessToken = request.body.originalDetectIntentRequest.payload.user.accessToken
-      var userID = request.body.originalDetectIntentRequest.payload.user.userId
+      
       axios
         .get("https://www.googleapis.com/oauth2/v1/userinfo?access_token="+accessToken)
         .then(res => {
