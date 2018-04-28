@@ -133,7 +133,7 @@ router.post("/dialog", (request, response) => {
             ,
             outputContexts:[
               {
-                name:request.body.session+"/contexts/option1-flightsearch-more-more-followup",
+                name:request.body.session+"/contexts/option1-flightsearch-final-yes",
                 "lifespanCount": 5,
                 "parameters": {
                   "source":sourceIata ,
