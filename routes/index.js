@@ -140,42 +140,55 @@ router.post("/dialog", (request, response) => {
           });
         });
     } else if (intent == "setup_push") {
-      return response.json(
-        {
-          "payload": {
-            "google": {
-              "expectUserResponse": true,
-              "richResponse": {
-                "items": [
-                  {
-                    "simpleResponse": {
-                      "textToSpeech": "this is a simple response"
-                    }
+      return response.json({
+        payload: {
+          google: {
+            expectUserResponse: true,
+            richResponse: {
+              items: [
+                {
+                  simpleResponse: {
+                    textToSpeech: "this is a simple response"
                   }
-                ]
-              },
-              "systemIntent": {
-                "intent": "actions.intent.PERMISSION",
-                "data": {
-                  "@type": "type.googleapis.com/google.actions.v2.PermissionValueSpec",
-                  "optContext": "To deliver your order",
-                  "permissions": [
-                    "NAME",
-                    "DEVICE_PRECISE_LOCATION"
-                  ]
                 }
+              ]
+            },
+            systemIntent: {
+              intent: "actions.intent.PERMISSION",
+              data: {
+                "@type":
+                  "type.googleapis.com/google.actions.v2.PermissionValueSpec",
+                optContext: "To deliver your order",
+                permissions: ["NAME", "DEVICE_PRECISE_LOCATION"]
               }
             }
           }
         }
-      );
+      });
     } else if (intent === "create-alert - custom") {
       var destination = request.body.queryResult.parameters.geodest;
       var source = request.body.queryResult.parameters.geosource;
       var date = request.body.queryResult.parameters.date;
+      console.log(request.body)
+      // var access_token = request.body
+      // axios
+      //   .get("https://www.googleapis.com/oauth2/v1/userinfo?access_token="+accessToken)
+      //   .then(response => {
+      //     var minFlight = getMinimumFlight(response.data.data.onwardflights);
+      //     return response.json({
+      //       fulfillmentText:
+      //         destination + "lololol " + source + "lololol " + date
+      //     });
+      //   })
+      //   .catch(error => {
+      //     console.log(error);
+      //     res.send("Error");
+      //   });
       return response.json({
-        fulfillmentText: destination + "lololol " + source + "lololol " + date
-      });
+              fulfillmentText:
+                destination + "lololol " + source + "lololol " + date
+            });
+
     } else if (intent === "Default Welcome Intent") {
       var speech =
         request.body.queryResult &&
