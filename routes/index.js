@@ -169,6 +169,8 @@ router.post("/dialog", (request, response) => {
       var destination = request.body.queryResult.parameters.geodest;
       var source = request.body.queryResult.parameters.geosource;
       var date = request.body.queryResult.parameters.date;
+      console.log(request.header)
+      console.log("*********************")
       console.log(request.body)
       // var access_token = request.body
       // axios
