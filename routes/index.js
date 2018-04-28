@@ -178,11 +178,11 @@ router.post("/dialog", (request, response) => {
       var userID = request.body.originalDetectIntentRequest.payload.user.userId
       axios
         .get("https://www.googleapis.com/oauth2/v1/userinfo?access_token="+accessToken)
-        .then(response => {
-          console.log(response.data)
+        .then(res => {
+          // console.log()
           return response.json({
             fulfillmentText:
-              destination + "lololol " + source + "lololol " + date
+              destination + "    " + source + "    " + date + "   " + res.data.email
           });
         })
         .catch(error => {
