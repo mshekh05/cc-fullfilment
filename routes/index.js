@@ -182,27 +182,28 @@ router.post("/dialog", (request, response) => {
           }
         }
       });
-    } else if (intent === "create-alert - custom") {
-      var destination = request.body.queryResult.parameters.geodest;
-      var source = request.body.queryResult.parameters.geosource;
-      var date = request.body.queryResult.parameters.date;
-      date = date.substring(0,10).replace("-","")
+    } else if (intent === "option1-flightsearch -final - yes") {
+      console.log(queryResult)
+      // var destination = request.body.queryResult.parameters.geodest;
+      // var source = request.body.queryResult.parameters.geosource;
+      // var date = request.body.queryResult.parameters.date;
+      // date = date.substring(0,10).replace("-","")
 
       
       
-      axios
-        .get("https://www.googleapis.com/oauth2/v1/userinfo?access_token="+accessToken)
-        .then(res => {
-          // console.log()
-          return response.json({
-            fulfillmentText:
-              destination + "    " + source + "    " + date + "   " + res.data.email
-          });
-        })
-        .catch(error => {
-          console.log(error);
-          res.send("Error");
-        });
+      // axios
+      //   .get("https://www.googleapis.com/oauth2/v1/userinfo?access_token="+accessToken)
+      //   .then(res => {
+      //     // console.log()
+      //     return response.json({
+      //       fulfillmentText:
+      //         destination + "    " + source + "    " + date + "   " + res.data.email
+      //     });
+      //   })
+      //   .catch(error => {
+      //     console.log(error);
+      //     res.send("Error");
+      //   });
 
 
     } else if (intent === "Default Welcome Intent") {
