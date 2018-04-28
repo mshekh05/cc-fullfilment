@@ -50,11 +50,14 @@ router.post("/dialog", (request, response) => {
     var intent = request.body.queryResult.intent.displayName;
     if (intent === "option1-flightsearch -final") {
       // Variable Declaration
-      console.log(request.body.queryResult)
+      console.log(request.body.queryResult);
       var destination = request.body.queryResult.parameters.geodestination;
-      var source =  request.body.queryResult.parameters.geosource;
+      var source = request.body.queryResult.parameters.geosource;
       var date = request.body.queryResult.parameters.date;
-      date = date.substring(0,10).replace("-","").replace("-","")
+      date = date
+        .substring(0, 10)
+        .replace("-", "")
+        .replace("-", "");
       var sourceIata = airports.findWhere({ city: source }).get("iata");
       var destinationIata = airports
         .findWhere({ city: destination })
@@ -71,12 +74,12 @@ router.post("/dialog", (request, response) => {
         sourceIata +
         "&destination=" +
         destinationIata +
-        "&dateofdeparture="+
-        date+
+        "&dateofdeparture=" +
+        date +
         "&seatingclass=E&adults=1&children=0&infants=0&counter=100";
-        // var accessToken = request.body.originalDetectIntentRequest.payload.user.accessToken
-        // var userID = request.body.originalDetectIntentRequest.payload.user.userId
-      console.log(url)
+      // var accessToken = request.body.originalDetectIntentRequest.payload.user.accessToken
+      // var userID = request.body.originalDetectIntentRequest.payload.user.userId
+      console.log(url);
       axios
         .get(url)
         .then(res => {
@@ -110,7 +113,6 @@ router.post("/dialog", (request, response) => {
                     },
                     {
                       basicCard: {
-                     
                         formattedText: "Price: " + minFlightCost,
                         image: {
                           url:
@@ -129,22 +131,20 @@ router.post("/dialog", (request, response) => {
                   ]
                 }
               }
-            }
-            ,
-            outputContexts:[
+            },
+            outputContexts: [
               {
-                name:request.body.session+"/contexts/option1-flightsearch-final-yes",
-                "lifespanCount": 5,
-                "parameters": {
-                  "source":sourceIata ,
-                  "destination":destinationIata,
-                  "date":date,
-                  "price":minFlightCost ,
+                name:
+                  request.body.session +
+                  "/contexts/option1-flightsearch-final-yes",
+                lifespanCount: 5,
+                parameters: {
+                  source: sourceIata,
+                  destination: destinationIata,
+                  date: date,
+                  price: minFlightCost
                   // "userid":userID,
                   // "accesstoken":useremail
-
-
-
                 }
               }
             ]
@@ -183,29 +183,50 @@ router.post("/dialog", (request, response) => {
         }
       });
     } else if (intent === "option1-flightsearch -final - yes") {
-      console.log(queryResult)
-      // var destination = request.body.queryResult.parameters.geodest;
-      // var source = request.body.queryResult.parameters.geosource;
-      // var date = request.body.queryResult.parameters.date;
-      // date = date.substring(0,10).replace("-","")
+      console.log(request.body.queryResult.parameters);
+      var destination = request.body.queryResult.parameters.destination;
+      var source = request.body.queryResult.parameters.source;
+      var date = request.body.queryResult.parameters.date;
+      var price = request.body.queryResult.parameters.price;
+      var accessToken =
+        request.body.originalDetectIntentRequest.payload.user.accessToken;
+      var userID = request.body.originalDetectIntentRequest.payload.user.userId;
 
-      
-      
-      // axios
-      //   .get("https://www.googleapis.com/oauth2/v1/userinfo?access_token="+accessToken)
-      //   .then(res => {
-      //     // console.log()
-      //     return response.json({
-      //       fulfillmentText:
-      //         destination + "    " + source + "    " + date + "   " + res.data.email
-      //     });
-      //   })
-      //   .catch(error => {
-      //     console.log(error);
-      //     res.send("Error");
-      //   });
-
-
+      axios
+        .get(
+          "https://www.googleapis.com/oauth2/v1/userinfo?access_token=" +
+            accessToken
+        )
+        .then(res => {
+          // console.log()
+          axios.post(
+            "https://us-central1-cc-proj-1.cloudfunctions.net/createAlert",
+            {
+              userid: userID,
+              useremail: res.data.email,
+              source: source,
+              destination: destination,
+              date: date,
+              price: price
+            }
+          )
+          .then(res2 => {
+            return response.json({
+              fulfillmentText:
+                destination +
+                "    " +
+                source +
+                "    " +
+                date +
+                "   " +
+                res.data.email
+            });
+          })
+        })
+        .catch(error => {
+          console.log(error);
+          res.send("Error");
+        });
     } else if (intent === "Default Welcome Intent") {
       var speech =
         request.body.queryResult &&
