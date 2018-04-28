@@ -212,15 +212,26 @@ router.post("/dialog", (request, response) => {
           )
           .then(res2 => {
             return response.json({
-              fulfillmentText:
-                destination +
-                "    " +
-                source +
-                "    " +
-                date +
-                "   " +
-                res.data.email
-            });
+              fulfillmentText:"You start receiving email on "+  res.data.email,
+              payload: {
+                google: {
+                  expectUserResponse: true,
+                  richResponse: {
+                    items: [
+                      {
+                        simpleResponse: {
+                          textToSpeech: "You start receiving email on "+  res.data.email
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          
+          
+          
+          );
           })
         })
         .catch(error => {
