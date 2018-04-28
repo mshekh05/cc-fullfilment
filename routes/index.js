@@ -171,26 +171,28 @@ router.post("/dialog", (request, response) => {
       var date = request.body.queryResult.parameters.date;
       // console.log()
       console.log("*********************")
-      console.log(request.body)
+      // console.log(request.body)
       console.log(request.body.originalDetectIntentRequest.payload.user)
-      // var access_token = request.body
-      // axios
-      //   .get("https://www.googleapis.com/oauth2/v1/userinfo?access_token="+accessToken)
-      //   .then(response => {
-      //     var minFlight = getMinimumFlight(response.data.data.onwardflights);
-      //     return response.json({
-      //       fulfillmentText:
-      //         destination + "lololol " + source + "lololol " + date
-      //     });
-      //   })
-      //   .catch(error => {
-      //     console.log(error);
-      //     res.send("Error");
-      //   });
-      return response.json({
-              fulfillmentText:
-                destination + "lololol " + source + "lololol " + date
-            });
+      
+      var accessToken = request.body.originalDetectIntentRequest.payload.user.accessToken
+      var userID = request.body.originalDetectIntentRequest.payload.user.userId
+      axios
+        .get("https://www.googleapis.com/oauth2/v1/userinfo?access_token="+accessToken)
+        .then(response => {
+          console.log(response.data)
+          return response.json({
+            fulfillmentText:
+              destination + "lololol " + source + "lololol " + date
+          });
+        })
+        .catch(error => {
+          console.log(error);
+          res.send("Error");
+        });
+      // return response.json({
+      //         fulfillmentText:
+      //           destination + "lololol " + source + "lololol " + date
+      //       });
 
     } else if (intent === "Default Welcome Intent") {
       var speech =
