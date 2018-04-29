@@ -283,8 +283,9 @@ router.get("/minflight", (req, res) => {
     .then(response => {
       var minFlight = getMinimumFlight(response.data.data.onwardflights);
       var price = minFlight.fare.grossamount / 66.62
+
       res.json({
-        price: price
+        price: price.toFixed(2)
       });
     })
     .catch(error => {
