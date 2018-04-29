@@ -96,7 +96,7 @@ router.post("/dialog", (request, response) => {
               {
                 card: {
                   // "text":destination + "        " + source + "     " + minFlightCost,
-                  title: destination + " to " + source,
+                  title: source + " to " +destination +"on" + date.substring(4,6)+"-"+date.substring(6,8)+"-"+date.substring(0,4),
                   subtitle: "Price: " + minFlightCost,
                   imageUri:
                     "https://images.trvl-media.com/media/content/expus/graphics/launch/home/tvly/150324_flights-hero-image_1330x742.jpg"
