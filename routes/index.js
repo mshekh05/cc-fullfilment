@@ -4,29 +4,31 @@ var airports = require("airport-codes");
 const axios = require("axios");
 var admin = require("firebase-admin");
 const functions = require("firebase-functions");
+var usd = 66.62
 // admin.initializeApp(functions.config().firebase);
 // var db = admin.firestore();
 // const url = 'https://developer.goibibo.com/api/search/?app_id=738f476c&app_key=f680503962623e838c52be41f0094b69&source='+source+'&destination='+destination+'&dateofdeparture=20180719&seatingclass=E&adults=1&children=0&infants=0&counter=100'
 
 /* GET home page. */
 
-function getUser() {
-  const userData = {
-    id: "user123",
-    firstName: "Jane",
-    lastName: "Middleton"
-  };
-  return db
-    .collection("alerts")
-    .doc("user123")
-    .set(userData)
-    .then(() => {
-      "new user data added to db";
-    });
-}
+// function getUser() {
+//   const userData = {
+//     id: "user123",
+//     firstName: "Jane",
+//     lastName: "Middleton"
+//   };
+//   return db
+//     .collection("alerts")
+//     .doc("user123")
+//     .set(userData)
+//     .then(() => {
+//       "new user data added to db";
+//     });
+// }
 router.get("/", (req, res) => {
   res.render("index", { title: "Express" });
 });
+
 router.get("/insert", (req, res) => {
   res.send(getUser());
 });
@@ -50,7 +52,7 @@ router.post("/dialog", (request, response) => {
     var intent = request.body.queryResult.intent.displayName;
     if (intent === "option1-flightsearch -final") {
       // Variable Declaration
-      console.log(request.body.queryResult);
+      // console.log(request.body.queryResult);
       var destination = request.body.queryResult.parameters.geodestination;
       var source = request.body.queryResult.parameters.geosource;
       var date = request.body.queryResult.parameters.date;
@@ -68,7 +70,6 @@ router.post("/dialog", (request, response) => {
           fulfillmentText: "Seems like some problem. Speak again."
         });
       }
-
       const url =
         "https://developer.goibibo.com/api/search/?app_id=738f476c&app_key=f680503962623e838c52be41f0094b69&source=" +
         sourceIata +
@@ -86,7 +87,8 @@ router.post("/dialog", (request, response) => {
           // res.send(getMinimumAFlight(res.data.data.onwardflights))
 
           var minFlight = getMinimumFlight(res.data.data.onwardflights);
-          var minFlightCost = minFlight.fare.grossamount;
+          var minFlightCost = minFlight.fare.grossamount/ usd;
+          minFlightCost = minFlightCost.toFixed(2)
           // minFlightCost = res.data.data.onwardflights[0].fare.grossamount
           return response.json({
             // "fulfillmentText": "We found the below flight for you",
@@ -260,7 +262,7 @@ router.post("/dialog", (request, response) => {
 
 router.get("/minflight", (req, res) => {
   // var source1 = ;
-  console.log(req.query);
+  // console.log(req.query);
   // var source = airports.findWhere({ city: req.query.source }).get('iata')
   // var destination = airports.findWhere({ city: req.query.destination }).get('iata')
   var source = req.query.source;
@@ -277,12 +279,11 @@ router.get("/minflight", (req, res) => {
     "&dateofdeparture=" +
     date +
     "&seatingclass=E&adults=1&children=0&infants=0&counter=100";
-
   axios
     .get(url)
     .then(response => {
       var minFlight = getMinimumFlight(response.data.data.onwardflights);
-      var price = minFlight.fare.grossamount / 66.62
+      var price = minFlight.fare.grossamount / usd
 
       res.json({
         price: price.toFixed(2)
