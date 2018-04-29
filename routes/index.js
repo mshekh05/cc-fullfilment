@@ -4,8 +4,8 @@ var airports = require("airport-codes");
 const axios = require("axios");
 var admin = require("firebase-admin");
 const functions = require("firebase-functions");
-admin.initializeApp(functions.config().firebase);
-var db = admin.firestore();
+// admin.initializeApp(functions.config().firebase);
+// var db = admin.firestore();
 // const url = 'https://developer.goibibo.com/api/search/?app_id=738f476c&app_key=f680503962623e838c52be41f0094b69&source='+source+'&destination='+destination+'&dateofdeparture=20180719&seatingclass=E&adults=1&children=0&infants=0&counter=100'
 
 /* GET home page. */
@@ -282,8 +282,9 @@ router.get("/minflight", (req, res) => {
     .get(url)
     .then(response => {
       var minFlight = getMinimumFlight(response.data.data.onwardflights);
+      var price = minFlight.fare.grossamount / 66.62
       res.json({
-        price: minFlight.fare.grossamount
+        price: price
       });
     })
     .catch(error => {
