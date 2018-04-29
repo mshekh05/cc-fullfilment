@@ -122,7 +122,7 @@ router.post("/dialog", (request, response) => {
                           accessibilityText:
                             "Accessibility text describing the image"
                         },
-                        title: destination + " to " + source
+                        title: source + " to " +destination +"on" + date.substring(4,6)+"-"+date.substring(6,8)+"-"+date.substring(0,4)
                       }
                     },
                     {
