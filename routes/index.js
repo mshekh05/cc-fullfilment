@@ -316,6 +316,30 @@ router.post("/dialog", (request, response) => {
         }
       });
     }
+    else if (intent === "actions.intent.OPTION")
+    {
+      console.log(request.body)
+
+      console.log(request.body.queryResult)
+      return response.json({
+        fulfillmentText:"we received something",
+        payload: {
+          google: {
+            expectUserResponse: true,
+            richResponse: {
+              items: [
+                {
+                  simpleResponse: {
+                    textToSpeech:
+                      "You will start receiving email for this alert "
+                  }
+                }
+              ]
+            }
+          }
+        }
+      });
+    }
   } catch (error) {
     console.log(request.body.queryResult);
     console.log(error);
