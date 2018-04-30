@@ -29,6 +29,17 @@ router.get("/", (req, res) => {
   res.render("index", { title: "Express" });
 });
 
+router.get("/:destination", (req, res) => {
+  var destination = req.params.destination
+  destination.replace("%20"," ")
+  console.log(destination)
+  console.log(airports
+  .findWhere({ city: destination })
+  .get("iata"))
+  console.log(airports
+    .findWhere({ city: destination })
+    .get("iata"))
+});
 
 function getMinimumFlight(flights) {
   var minFlight = flights[0];
@@ -247,47 +258,54 @@ router.post("/dialog", (request, response) => {
       return response.json({
         fulfillmentText: "We found the below flight for you",
 
-        payload: {
-          google: {
-            expectUserResponse: true,
-            richResponse: {
-              items: [
-                {
-                  simpleResponse: {
-                    textToSpeech: "This is a carousel"
-                  }
-                }
-              ]
-            },
-            systemIntent: {
-              intent: "actions.intent.OPTION",
-              data: {
-                "@type":
-                  "type.googleapis.com/google.actions.v2.OptionValueSpec",
-                carouselSelect: {
-                  items: [
-                    {
-                      optionInfo: {
-                        key: "key1",
-                        synonyms: ["Option 1"]
-                      },
-                      title: "Option 1",
-                      description: "Option 2"
-                    },
-                    {
-                      optionInfo: {
-                        key: "key2",
-                        synonyms: ["Option 2"]
-                      },
-                      title: "Option 2",
-                      description: "Option 2"
+        
+          "payload": {
+            "google": {
+              "expectUserResponse": true,
+              "richResponse": {
+                "items": [
+                  {
+                    "simpleResponse": {
+                      "textToSpeech": "Choose a item"
                     }
-                  ]
+                  }
+                ]
+              },
+              "systemIntent": {
+                "intent": "actions.intent.OPTION",
+                "data": {
+                  "@type": "type.googleapis.com/google.actions.v2.OptionValueSpec",
+                  "carouselSelect": {
+                    "items": [
+                      {
+                        "optionInfo": {
+                          "key": "first title"
+                        },
+                        "description": "first description",
+                        "image": {
+                          "url": "https://developers.google.com/actions/images/badges/XPM_BADGING_GoogleAssistant_VER.png",
+                          "accessibilityText": "first alt"
+                        },
+                        "title": "first title"
+                      },
+                      {
+                        "optionInfo": {
+                          "key": "second"
+                        },
+                        "description": "second description",
+                        "image": {
+                          "url": "https://lh3.googleusercontent.com/Nu3a6F80WfixUqf_ec_vgXy_c0-0r4VLJRXjVFF_X_CIilEu8B9fT35qyTEj_PEsKw",
+                          "accessibilityText": "second alt"
+                        },
+                        "title": "second title"
+                      }
+                    ]
+                  }
                 }
               }
             }
           }
-        }
+        
       });
     }
     else if (intent === "actions.intent.OPTION")
