@@ -29,17 +29,17 @@ router.get("/", (req, res) => {
   res.render("index", { title: "Express" });
 });
 
-router.get("/:destination", (req, res) => {
-  var destination = req.params.destination
-  destination.replace("%20"," ")
-  console.log(destination)
-  console.log(airports
-  .findWhere({ city: destination })
-  .get("iata"))
-  console.log(airports
-    .findWhere({ city: destination })
-    .get("iata"))
-});
+// router.get("/:destination", (req, res) => {
+//   var destination = req.params.destination
+//   destination.replace("%20"," ")
+//   console.log(destination)
+//   console.log(airports
+//   .findWhere({ city: destination })
+//   .get("iata"))
+//   console.log(airports
+//     .findWhere({ city: destination })
+//     .get("iata"))
+// });
 
 function getMinimumFlight(flights) {
   var minFlight = flights[0];
