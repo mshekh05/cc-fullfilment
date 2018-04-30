@@ -258,61 +258,63 @@ router.post("/dialog", (request, response) => {
       return response.json({
         fulfillmentText: "We found the below flight for you",
 
-        
-          "payload": {
-            "google": {
-              "expectUserResponse": true,
-              "richResponse": {
-                "items": [
-                  {
-                    "simpleResponse": {
-                      "textToSpeech": "Choose a item"
-                    }
+        payload: {
+          google: {
+            expectUserResponse: true,
+            richResponse: {
+              items: [
+                {
+                  simpleResponse: {
+                    textToSpeech:
+                      "Below are all the alert. Please Tap for further option. "
                   }
-                ]
-              },
-              "systemIntent": {
-                "intent": "actions.intent.OPTION",
-                "data": {
-                  "@type": "type.googleapis.com/google.actions.v2.OptionValueSpec",
-                  "carouselSelect": {
-                    "items": [
-                      {
-                        "optionInfo": {
-                          "key": "first title"
-                        },
-                        "description": "first description",
-                        "image": {
-                          "url": "https://developers.google.com/actions/images/badges/XPM_BADGING_GoogleAssistant_VER.png",
-                          "accessibilityText": "first alt"
-                        },
-                        "title": "first title"
+                }
+              ]
+            },
+            systemIntent: {
+              intent: "actions.intent.OPTION",
+              data: {
+                "@type":
+                  "type.googleapis.com/google.actions.v2.OptionValueSpec",
+                carouselSelect: {
+                  items: [
+                    {
+                      optionInfo: {
+                        key: "first title"
                       },
-                      {
-                        "optionInfo": {
-                          "key": "second"
-                        },
-                        "description": "second description",
-                        "image": {
-                          "url": "https://lh3.googleusercontent.com/Nu3a6F80WfixUqf_ec_vgXy_c0-0r4VLJRXjVFF_X_CIilEu8B9fT35qyTEj_PEsKw",
-                          "accessibilityText": "second alt"
-                        },
-                        "title": "second title"
-                      }
-                    ]
-                  }
+                      description: "first description",
+                      image: {
+                        url:
+                          "https://picsum.photos/232/128/?random",
+                        accessibilityText: "first alt"
+                      },
+                      title: "first title"
+                    },
+                    {
+                      optionInfo: {
+                        key: "second"
+                      },
+                      description: "second description",
+                      image: {
+                        url:
+                          "https://picsum.photos/232/128/?random",
+                        accessibilityText: "second alt"
+                      },
+                      title: "second title"
+                    }
+                  ]
                 }
               }
             }
           }
-        
+        }
       });
     }
     else if (intent === "actions.intent.OPTION")
     {
       console.log(request.body)
 
-      console.log(request.body.queryResult)
+      console.log(request.body.queryResult.parameters.alert_id)
       return response.json({
         fulfillmentText:"we received something",
         payload: {
