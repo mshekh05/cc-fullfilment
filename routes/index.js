@@ -96,7 +96,7 @@ router.post("/dialog", (request, response) => {
               {
                 card: {
                   // "text":destination + "        " + source + "     " + minFlightCost,
-                  title: source + " to " +destination +"on" + date.substring(4,6)+"-"+date.substring(6,8)+"-"+date.substring(0,4),
+                  title: source + " to " +destination +" on " + date.substring(4,6)+"-"+date.substring(6,8)+"-"+date.substring(0,4),
                   subtitle: "Price: " + minFlightCost,
                   imageUri:
                     "https://images.trvl-media.com/media/content/expus/graphics/launch/home/tvly/150324_flights-hero-image_1330x742.jpg"
@@ -122,7 +122,7 @@ router.post("/dialog", (request, response) => {
                           accessibilityText:
                             "Accessibility text describing the image"
                         },
-                        title: source + " to " +destination +"on" + date.substring(4,6)+"-"+date.substring(6,8)+"-"+date.substring(0,4)
+                        title: source + " to " +destination +" on " + date.substring(4,6)+"-"+date.substring(6,8)+"-"+date.substring(0,4)
                       }
                     },
                     {
@@ -184,7 +184,8 @@ router.post("/dialog", (request, response) => {
           }
         }
       });
-    } else if (intent === "option1-flightsearch -final - yes") {
+    }
+     else if (intent === "option1-flightsearch -final - yes") {
       console.log(request.body.queryResult.parameters);
       var destination = request.body.queryResult.parameters.destination;
       var source = request.body.queryResult.parameters.source;
