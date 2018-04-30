@@ -29,9 +29,6 @@ router.get("/", (req, res) => {
   res.render("index", { title: "Express" });
 });
 
-router.get("/insert", (req, res) => {
-  res.send(getUser());
-});
 
 function getMinimumFlight(flights) {
   var minFlight = flights[0];
@@ -50,6 +47,8 @@ function getMinimumFlight(flights) {
 router.post("/dialog", (request, response) => {
   try {
     var intent = request.body.queryResult.intent.displayName;
+    console.log(request.body.queryResult.parameters);
+
     if (intent === "option1-flightsearch -final") {
       // Variable Declaration
       // console.log(request.body.queryResult);
@@ -176,33 +175,8 @@ router.post("/dialog", (request, response) => {
             fulfillmentText: "Seems like some problem. Speak again."
           });
         });
-    } else if (intent == "setup_push") {
-      return response.json({
-        payload: {
-          google: {
-            expectUserResponse: true,
-            richResponse: {
-              items: [
-                {
-                  simpleResponse: {
-                    textToSpeech: "this is a simple response"
-                  }
-                }
-              ]
-            },
-            systemIntent: {
-              intent: "actions.intent.PERMISSION",
-              data: {
-                "@type":
-                  "type.googleapis.com/google.actions.v2.PermissionValueSpec",
-                optContext: "To deliver your order",
-                permissions: ["NAME", "DEVICE_PRECISE_LOCATION"]
-              }
-            }
-          }
-        }
-      });
-    } else if (intent === "option1-flightsearch -final - yes") {
+    } 
+     else if (intent === "option1-flightsearch -final - yes") {
       console.log(request.body.queryResult.parameters);
       var destination = request.body.queryResult.parameters.destination;
       var source = request.body.queryResult.parameters.source;
