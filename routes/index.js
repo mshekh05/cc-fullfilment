@@ -4,7 +4,7 @@ var airports = require("airport-codes");
 const axios = require("axios");
 var admin = require("firebase-admin");
 const functions = require("firebase-functions");
-var usd = 66.62
+var usd = 66.62;
 // admin.initializeApp(functions.config().firebase);
 // var db = admin.firestore();
 // const url = 'https://developer.goibibo.com/api/search/?app_id=738f476c&app_key=f680503962623e838c52be41f0094b69&source='+source+'&destination='+destination+'&dateofdeparture=20180719&seatingclass=E&adults=1&children=0&infants=0&counter=100'
@@ -87,8 +87,8 @@ router.post("/dialog", (request, response) => {
           // res.send(getMinimumAFlight(res.data.data.onwardflights))
 
           var minFlight = getMinimumFlight(res.data.data.onwardflights);
-          var minFlightCost = minFlight.fare.grossamount/ usd;
-          minFlightCost = minFlightCost.toFixed(2)
+          var minFlightCost = minFlight.fare.grossamount / usd;
+          minFlightCost = minFlightCost.toFixed(2);
           // minFlightCost = res.data.data.onwardflights[0].fare.grossamount
           return response.json({
             // "fulfillmentText": "We found the below flight for you",
@@ -96,7 +96,16 @@ router.post("/dialog", (request, response) => {
               {
                 card: {
                   // "text":destination + "        " + source + "     " + minFlightCost,
-                  title: source + " to " +destination +" on " + date.substring(4,6)+"-"+date.substring(6,8)+"-"+date.substring(0,4),
+                  title:
+                    source +
+                    " to " +
+                    destination +
+                    " on " +
+                    date.substring(4, 6) +
+                    "-" +
+                    date.substring(6, 8) +
+                    "-" +
+                    date.substring(0, 4),
                   subtitle: "Price: " + minFlightCost,
                   imageUri:
                     "https://images.trvl-media.com/media/content/expus/graphics/launch/home/tvly/150324_flights-hero-image_1330x742.jpg"
@@ -122,7 +131,16 @@ router.post("/dialog", (request, response) => {
                           accessibilityText:
                             "Accessibility text describing the image"
                         },
-                        title: source + " to " +destination +" on " + date.substring(4,6)+"-"+date.substring(6,8)+"-"+date.substring(0,4)
+                        title:
+                          source +
+                          " to " +
+                          destination +
+                          " on " +
+                          date.substring(4, 6) +
+                          "-" +
+                          date.substring(6, 8) +
+                          "-" +
+                          date.substring(0, 4)
                       }
                     },
                     {
@@ -158,8 +176,7 @@ router.post("/dialog", (request, response) => {
             fulfillmentText: "Seems like some problem. Speak again."
           });
         });
-    } 
-    else if (intent == "setup_push") {
+    } else if (intent == "setup_push") {
       return response.json({
         payload: {
           google: {
@@ -185,8 +202,7 @@ router.post("/dialog", (request, response) => {
           }
         }
       });
-    }
-     else if (intent === "option1-flightsearch -final - yes") {
+    } else if (intent === "option1-flightsearch -final - yes") {
       console.log(request.body.queryResult.parameters);
       var destination = request.body.queryResult.parameters.destination;
       var source = request.body.queryResult.parameters.source;
@@ -203,40 +219,41 @@ router.post("/dialog", (request, response) => {
         )
         .then(res => {
           // console.log()
-          axios.post(
-            "https://us-central1-cc-proj-1.cloudfunctions.net/createAlert",
-            {
-              userid: userID,
-              useremail: res.data.email,
-              source: source,
-              destination: destination,
-              date: date,
-              price: price
-            }
-          )
-          .then(res2 => {
-            return response.json({
-              fulfillmentText:"You start receiving email on "+  res.data.email,
-              payload: {
-                google: {
-                  expectUserResponse: true,
-                  richResponse: {
-                    items: [
-                      {
-                        simpleResponse: {
-                          textToSpeech: "You will start receiving email on "+  res.data.email +"! Good Bye !"
+          axios
+            .post(
+              "https://us-central1-cc-proj-1.cloudfunctions.net/createAlert",
+              {
+                userid: userID,
+                useremail: res.data.email,
+                source: source,
+                destination: destination,
+                date: date,
+                price: price
+              }
+            )
+            .then(res2 => {
+              return response.json({
+                fulfillmentText:
+                  "You start receiving email on " + res.data.email,
+                payload: {
+                  google: {
+                    expectUserResponse: true,
+                    richResponse: {
+                      items: [
+                        {
+                          simpleResponse: {
+                            textToSpeech:
+                              "You will start receiving email on " +
+                              res.data.email +
+                              "! Good Bye !"
+                          }
                         }
-                      }
-                    ]
+                      ]
+                    }
                   }
                 }
-              }
-            }
-          
-          
-          
-          );
-          })
+              });
+            });
         })
         .catch(error => {
           console.log(error);
@@ -252,120 +269,52 @@ router.post("/dialog", (request, response) => {
       return response.json({
         fulfillmentText: speech
       });
-    }
-    else if (intent === "get_alerts"){
-      return response.json(
-        {
-          "fulfillmentText": "We found the below flight for you",
-          
-          payload: {
-            google: 
-            {
-              "conversationToken": "",
-              "expectUserResponse": true,
-              "expectedInputs": [
-                  {
-                      "inputPrompt": {
-                          "initialPrompts": [
-                              {
-                                  "textToSpeech": "Alright! Here are a few things you can learn. Which sounds interesting?"
-                              }
-                          ],
-                          "noInputPrompts": []
-                      },
-                      "possibleIntents": [
-                          {
-                              "intent": "actions.intent.OPTION",
-                              "inputValueData": {
-                                  "@type": "type.googleapis.com/google.actions.v2.OptionValueSpec",
-                                  "carouselSelect": {
-                                      "items": [
-                                          {
-                                              "optionInfo": {
-                                                  "key": "MATH_AND_PRIME",
-                                                  "synonyms": [
-                                                      "math",
-                                                      "math and prime",
-                                                      "prime numbers",
-                                                      "prime"
-                                                  ]
-                                              },
-                                              "title": "Math & prime numbers",
-                                              "description": "42 is an abundant number because the sum of its proper divisors 54 is greater…",
-                                              "image": {
-                                                  "url": "http://example.com/math_and_prime.jpg",
-                                                  "accessibilityText": "Math & prime numbers"
-                                              }
-                                          },
-                                          {
-                                              "optionInfo": {
-                                                  "key": "EGYPT",
-                                                  "synonyms": [
-                                                      "religion",
-                                                      "egpyt",
-                                                      "ancient egyptian"
-                                                  ]
-                                              },
-                                              "title": "Ancient Egyptian religion",
-                                              "description": "42 gods who ruled on the fate of the dead in the afterworld. Throughout the under…",
-                                              "image": {
-                                                  "url": "http://example.com/egypt",
-                                                  "accessibilityText": "Egypt"
-                                              }
-                                          },
-                                          {
-                                              "optionInfo": {
-                                                  "key": "RECIPES",
-                                                  "synonyms": [
-                                                      "recipes",
-                                                      "recipe",
-                                                      "42 recipes"
-                                                  ]
-                                              },
-                                              "title": "42 recipes with 42 ingredients",
-                                              "description": "Here's a beautifully simple recipe that's full of flavor! All you need is some ginger and…",
-                                              "image": {
-                                                  "url": "http://example.com/recipe",
-                                                  "accessibilityText": "Recipe"
-                                              }
-                                          }
-                                      ]
-                                  }
-                              }
-                          }
-                      ]
+    } else if (intent === "get_alerts") {
+      return response.json({
+        fulfillmentText: "We found the below flight for you",
+
+        payload: {
+          google: {
+            expectUserResponse: true,
+            richResponse: {
+              items: [
+                {
+                  simpleResponse: {
+                    textToSpeech: "This is a carousel"
                   }
+                }
               ]
+            },
+            systemIntent: {
+              intent: "actions.intent.OPTION",
+              data: {
+                "@type":
+                  "type.googleapis.com/google.actions.v2.OptionValueSpec",
+                carouselSelect: {
+                  items: [
+                    {
+                      optionInfo: {
+                        key: "key1",
+                        synonyms: ["Option 1"]
+                      },
+                      title: "Option 1",
+                      description: "Option 2"
+                    },
+                    {
+                      optionInfo: {
+                        key: "key2",
+                        synonyms: ["Option 2"]
+                      },
+                      title: "Option 2",
+                      description: "Option 2"
+                    }
+                  ]
+                }
+              }
+            }
           }
-          }
-          ,
-          // outputContexts: [
-          //   {
-          //     name:
-          //       request.body.session +
-          //       "/contexts/option1-flightsearch-final-yes",
-          //     lifespanCount: 5,
-          //     parameters: {
-          //       source: sourceIata,
-          //       destination: destinationIata,
-          //       date: date,
-          //       price: minFlightCost
-          //       // "userid":userID,
-          //       // "accesstoken":useremail
-          //     }
-          //   }
-          // ]
         }
-
-
-
-
-
-
-
-
-
-      )
+      });
     }
   } catch (error) {
     console.log(request.body.queryResult);
@@ -399,7 +348,7 @@ router.get("/minflight", (req, res) => {
     .get(url)
     .then(response => {
       var minFlight = getMinimumFlight(response.data.data.onwardflights);
-      var price = minFlight.fare.grossamount / usd
+      var price = minFlight.fare.grossamount / usd;
 
       res.json({
         price: price.toFixed(2)
