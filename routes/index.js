@@ -158,7 +158,8 @@ router.post("/dialog", (request, response) => {
             fulfillmentText: "Seems like some problem. Speak again."
           });
         });
-    } else if (intent == "setup_push") {
+    } 
+    else if (intent == "setup_push") {
       return response.json({
         payload: {
           google: {
@@ -251,6 +252,120 @@ router.post("/dialog", (request, response) => {
       return response.json({
         fulfillmentText: speech
       });
+    }
+    else if (intent === "get_alerts"){
+      return response.json(
+        {
+          "fulfillmentText": "We found the below flight for you",
+          
+          payload: {
+            google: 
+            {
+              "conversationToken": "",
+              "expectUserResponse": true,
+              "expectedInputs": [
+                  {
+                      "inputPrompt": {
+                          "initialPrompts": [
+                              {
+                                  "textToSpeech": "Alright! Here are a few things you can learn. Which sounds interesting?"
+                              }
+                          ],
+                          "noInputPrompts": []
+                      },
+                      "possibleIntents": [
+                          {
+                              "intent": "actions.intent.OPTION",
+                              "inputValueData": {
+                                  "@type": "type.googleapis.com/google.actions.v2.OptionValueSpec",
+                                  "carouselSelect": {
+                                      "items": [
+                                          {
+                                              "optionInfo": {
+                                                  "key": "MATH_AND_PRIME",
+                                                  "synonyms": [
+                                                      "math",
+                                                      "math and prime",
+                                                      "prime numbers",
+                                                      "prime"
+                                                  ]
+                                              },
+                                              "title": "Math & prime numbers",
+                                              "description": "42 is an abundant number because the sum of its proper divisors 54 is greater…",
+                                              "image": {
+                                                  "url": "http://example.com/math_and_prime.jpg",
+                                                  "accessibilityText": "Math & prime numbers"
+                                              }
+                                          },
+                                          {
+                                              "optionInfo": {
+                                                  "key": "EGYPT",
+                                                  "synonyms": [
+                                                      "religion",
+                                                      "egpyt",
+                                                      "ancient egyptian"
+                                                  ]
+                                              },
+                                              "title": "Ancient Egyptian religion",
+                                              "description": "42 gods who ruled on the fate of the dead in the afterworld. Throughout the under…",
+                                              "image": {
+                                                  "url": "http://example.com/egypt",
+                                                  "accessibilityText": "Egypt"
+                                              }
+                                          },
+                                          {
+                                              "optionInfo": {
+                                                  "key": "RECIPES",
+                                                  "synonyms": [
+                                                      "recipes",
+                                                      "recipe",
+                                                      "42 recipes"
+                                                  ]
+                                              },
+                                              "title": "42 recipes with 42 ingredients",
+                                              "description": "Here's a beautifully simple recipe that's full of flavor! All you need is some ginger and…",
+                                              "image": {
+                                                  "url": "http://example.com/recipe",
+                                                  "accessibilityText": "Recipe"
+                                              }
+                                          }
+                                      ]
+                                  }
+                              }
+                          }
+                      ]
+                  }
+              ]
+          }
+          }
+          ,
+          // outputContexts: [
+          //   {
+          //     name:
+          //       request.body.session +
+          //       "/contexts/option1-flightsearch-final-yes",
+          //     lifespanCount: 5,
+          //     parameters: {
+          //       source: sourceIata,
+          //       destination: destinationIata,
+          //       date: date,
+          //       price: minFlightCost
+          //       // "userid":userID,
+          //       // "accesstoken":useremail
+          //     }
+          //   }
+          // ]
+        }
+
+
+
+
+
+
+
+
+
+      )
     }
   } catch (error) {
     console.log(request.body.queryResult);
