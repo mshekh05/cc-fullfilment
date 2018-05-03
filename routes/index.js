@@ -276,34 +276,7 @@ router.post("/dialog", (request, response) => {
               data: {
                 "@type":
                   "type.googleapis.com/google.actions.v2.OptionValueSpec",
-                carouselSelect: {
-                  items: [
-                    {
-                      optionInfo: {
-                        key: "first title"
-                      },
-                      description: "first description",
-                      image: {
-                        url:
-                          "https://picsum.photos/232/128/?random",
-                        accessibilityText: "first alt"
-                      },
-                      title: "first title"
-                    },
-                    {
-                      optionInfo: {
-                        key: "second"
-                      },
-                      description: "second description",
-                      image: {
-                        url:
-                          "https://picsum.photos/232/128/?random",
-                        accessibilityText: "second alt"
-                      },
-                      title: "second title"
-                    }
-                  ]
-                }
+                carouselSelect: {"items": [{ optionInfo: { key: "suOAi0xZlx46voCFF7WO" }, description: "PHX to ATL on 20180720 for a low fare of 167.73", image: { url:"https://picsum.photos/232/128/?random", accessibilityText: "suOAi0xZlx46voCFF7WO"}, title: "suOAi0xZlx46voCFF7WO"}]}
               }
             }
           }
@@ -325,9 +298,8 @@ router.post("/dialog", (request, response) => {
                 {
                   simpleResponse: {
                     textToSpeech:
-                      "You will start receiving email for this alert "
-                  }
-                }
+                      "You will start receiving email for "+request.body.queryResult.parameters.alert_id
+                  }                }
               ]
             }
           }
