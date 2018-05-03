@@ -186,8 +186,7 @@ router.post("/dialog", (request, response) => {
             fulfillmentText: "Seems like some problem. Speak again."
           });
         });
-    } 
-     else if (intent === "option1-flightsearch -final - yes") {
+    } else if (intent === "option1-flightsearch -final - yes") {
       console.log(request.body.queryResult.parameters);
       var destination = request.body.queryResult.parameters.destination;
       var source = request.body.queryResult.parameters.source;
@@ -276,20 +275,71 @@ router.post("/dialog", (request, response) => {
               data: {
                 "@type":
                   "type.googleapis.com/google.actions.v2.OptionValueSpec",
-                carouselSelect: {"items": [{ optionInfo: { key: "suOAi0xZlx46voCFF7WO" }, description: "PHX to ATL on 20180720 for a low fare of 167.73", image: { url:"https://picsum.photos/232/128/?random", accessibilityText: "suOAi0xZlx46voCFF7WO"}, title: "suOAi0xZlx46voCFF7WO"}]}
+                carouselSelect: {
+                  items: [
+                    {
+                      optionInfo: { key: "3LSQgtA4OOxrttH2KfW1" },
+                      description:
+                        "PHX to BOS on 20180701 for a low fare of 217.16",
+                      image: {
+                        url: "https://picsum.photos/232/128/?random",
+                        accessibilityText: "3LSQgtA4OOxrttH2KfW1"
+                      },
+                      title: "3LSQgtA4OOxrttH2KfW1"
+                    },
+                    {
+                      optionInfo: { key: "4FHHP9mlDEMObcLAi8Bs" },
+                      description:
+                        "PHX to LGA on 20180703 for a low fare of 158.84",
+                      image: {
+                        url: "https://picsum.photos/232/128/?random",
+                        accessibilityText: "4FHHP9mlDEMObcLAi8Bs"
+                      },
+                      title: "4FHHP9mlDEMObcLAi8Bs"
+                    },
+                    {
+                      optionInfo: { key: "R3ejMzXuRRw9X1XjKOUK" },
+                      description:
+                        "PHX to BOS on 20180722 for a low fare of 188.52",
+                      image: {
+                        url: "https://picsum.photos/232/128/?random",
+                        accessibilityText: "R3ejMzXuRRw9X1XjKOUK"
+                      },
+                      title: "R3ejMzXuRRw9X1XjKOUK"
+                    },
+                    {
+                      optionInfo: { key: "Xn3RJ7lSOewc61xyVNDx" },
+                      description:
+                        "PHX to LGA on 20180718 for a low fare of 154.47",
+                      image: {
+                        url: "https://picsum.photos/232/128/?random",
+                        accessibilityText: "Xn3RJ7lSOewc61xyVNDx"
+                      },
+                      title: "Xn3RJ7lSOewc61xyVNDx"
+                    },
+                    {
+                      optionInfo: { key: "t8d4UOlgH7fwJKBVoozo" },
+                      description:
+                        "PHX to LGA on 20180718 for a low fare of 154.47",
+                      image: {
+                        url: "https://picsum.photos/232/128/?random",
+                        accessibilityText: "t8d4UOlgH7fwJKBVoozo"
+                      },
+                      title: "t8d4UOlgH7fwJKBVoozo"
+                    }
+                  ]
+                }
               }
             }
           }
         }
       });
-    }
-    else if (intent === "actions.intent.OPTION")
-    {
-      console.log(request.body)
+    } else if (intent === "actions.intent.OPTION") {
+      console.log(request.body);
 
-      console.log(request.body.queryResult.parameters.alert_id)
+      console.log(request.body.queryResult.parameters.alert_id);
       return response.json({
-        fulfillmentText:"we received something",
+        fulfillmentText: "we received something",
         payload: {
           google: {
             expectUserResponse: true,
@@ -298,8 +348,10 @@ router.post("/dialog", (request, response) => {
                 {
                   simpleResponse: {
                     textToSpeech:
-                      "You will start receiving email for "+request.body.queryResult.parameters.alert_id
-                  }                }
+                      "You will start receiving email for " +
+                      request.body.queryResult.parameters.alert_id
+                  }
+                }
               ]
             }
           }
