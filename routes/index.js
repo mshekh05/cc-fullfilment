@@ -71,10 +71,21 @@ router.post("/dialog", (request, response) => {
         .replace("-", "")
         .replace("-", "");
         try{
-      var sourceIata = airports.findWhere({ city: source }).get("iata");
-      var destinationIata = airports
+          var sourceIata,destinationIata
+          if (source === "San Jose"){
+            sourceIata = "SJC"
+          }
+          else{
+       sourceIata = airports.findWhere({ city: source }).get("iata");
+          }
+          if (destination === "SanJose"){
+            destinationIata = "SJC"
+          }
+          else{
+       destinationIata = airports
         .findWhere({ city: destination })
         .get("iata");
+          }
         }
      catch(error){
         return response.json({
