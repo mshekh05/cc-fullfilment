@@ -226,7 +226,7 @@ router.post("/dialog", (request, response) => {
         }
         })
         .catch(error => {
-          console.log(error);
+          console.log("HEre"+error);
           return response.json({
             fulfillmentText: "Seems like some problem. Speak again."
           });
