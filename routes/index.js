@@ -440,6 +440,22 @@ if (Object.keys(data.items).length=== 0){
   });
 
 }
+else if (Object.keys(data.items).length===1 ){
+  data.items.push(
+    {
+      "optionInfo": {
+          "key": "More"
+          
+      },
+      "title": "More",
+      // "description": "42 is an abundant number because the sum of its proper divisors 54 is greater…",
+      // "image": {
+      //     "url": "http://example.com/math_and_prime.jpg"
+      //     // "accessibilityText": "Math & prime numbers"
+      // }
+  }
+  )
+}
           return response.json({
             fulfillmentText: "We found the below flight for you",
 
@@ -482,6 +498,34 @@ if (Object.keys(data.items).length=== 0){
         alertid +
         "&userid=" +
         userID;
+
+if (alertid==="More"){
+  return response.json({
+    fulfillmentText: "Alert deleted",
+    payload: {
+      google: {
+        expectUserResponse: true,
+        richResponse: {
+          items: [
+            {
+              simpleResponse: {
+                textToSpeech:
+                  "You have no more alerts"
+              }
+            },
+            {
+              simpleResponse: {
+                textToSpeech:
+                  "Do you want to search another flight or get all alerts"
+              }
+            }
+          ]
+        }
+      }
+    }
+  });
+}
+
       axios
         .get(url)
         .then(res => {
