@@ -261,7 +261,7 @@ router.post("/dialog", (request, response) => {
     .then(res => {
       console.log(res.data) 
       var data = res.data
-      console.log(length(res.data))
+      console.log(data.length())
 
 
       return response.json({
