@@ -275,7 +275,7 @@ router.post("/dialog", (request, response) => {
               data: {
                 "@type":
                   "type.googleapis.com/google.actions.v2.OptionValueSpec",
-                carouselSelect: {
+                  listSelect: {
                   items: [
                     {
                       optionInfo: { key: "3LSQgtA4OOxrttH2KfW1" },
