@@ -95,7 +95,7 @@ router.post("/dialog", (request, response) => {
         .get(url)
         .then(res => {
           // res.send(getMinimumAFlight(res.data.data.onwardflights))
-
+          console.log(res.data.data.onwardflights.length)
           var minFlight = getMinimumFlight(res.data.data.onwardflights);
           var minFlightCost = minFlight.fare.grossamount / usd;
           minFlightCost = minFlightCost.toFixed(2);
