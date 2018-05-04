@@ -302,7 +302,13 @@ router.post("/dialog", (request, response) => {
     } else if (intent === "actions.intent.OPTION") {
       console.log(request.body);
 
-      console.log(request.body.queryResult.parameters.alert_id);
+      var alertid = request.body.queryResult.parameters.alert_id
+      var userID = request.body.originalDetectIntentRequest.payload.user.userId;
+      var url = "https://us-central1-cc-proj-1.cloudfunctions.net/deleteAlert?alertid="+alertid+"&userid="+userID
+      axios
+    .get(url)
+    .then(res => {
+
       return response.json({
         fulfillmentText: "we received something",
         payload: {
@@ -322,7 +328,13 @@ router.post("/dialog", (request, response) => {
           }
         }
       });
-    }
+    })  .catch(error => {
+      console.log(error);
+      return response.json({
+        fulfillmentText: "Seems like some problem. Speak again."
+      });
+    });
+  }
   } catch (error) {
     console.log(request.body.queryResult);
     console.log(error);
