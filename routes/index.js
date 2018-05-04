@@ -102,7 +102,7 @@ router.post("/dialog", (request, response) => {
 
 
           return response.json({
-            fulfillmentText:  "There was an error in your search "+ res.data.data.Error,
+            fulfillmentText:  "There was an error in your search. "+ res.data.data.Error,
             payload: {
               google: {
                 expectUserResponse: true,
@@ -111,7 +111,7 @@ router.post("/dialog", (request, response) => {
                     {
                       simpleResponse: {
                         textToSpeech:
-                        "There was an error in your search "+ res.data.data.Error
+                        "There was an error in your search. "+ res.data.data.Error
                       }
                     },
                     {
@@ -260,8 +260,43 @@ router.post("/dialog", (request, response) => {
         .catch(error => {
           console.log("HEre"+error);
           return response.json({
-            fulfillmentText: "Seems like some problem. Speak again."
+            fulfillmentText:  "There was an error in your search ",
+            payload: {
+              google: {
+                expectUserResponse: true,
+                richResponse: {
+                  items: [
+                    {
+                      simpleResponse: {
+                        textToSpeech:
+                        "There was an error in your search "
+                      }
+                    },
+                    {
+                      simpleResponse: {
+                        textToSpeech:
+                          "Do you want to Search a flight or Get all alerts?"
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            outputContexts: [
+              {
+                name:
+                  request.body.session +
+                  "/contexts/option1-flightsearch-final-followup",
+                lifespanCount: 0
+              }
+            ]
           });
+
+          
+
+
+
+
         });
     } else if (intent === "option1-flightsearch -final - yes") {
       console.log(request.body.queryResult.parameters);
