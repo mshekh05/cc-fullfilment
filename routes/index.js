@@ -405,8 +405,42 @@ router.post("/dialog", (request, response) => {
         .then(res => {
           console.log(res.data);
           var data = res.data;
-          console.log(Object.keys(data).length);
+          console.log(Object.keys(data.items).length);
+if (Object.keys(data.items).length=== 0){
+  return response.json({
+    fulfillmentText:  "There was an error in your search. "+ res.data.data.Error,
+    payload: {
+      google: {
+        expectUserResponse: true,
+        richResponse: {
+          items: [
+            {
+              simpleResponse: {
+                textToSpeech:
+                "You have created no alerts"
+              }
+            },
+            {
+              simpleResponse: {
+                textToSpeech:
+                  "Please say Search a flight to search and create new alert."
+              }
+            }
+          ]
+        }
+      }
+    },
+    outputContexts: [
+      {
+        name:
+          request.body.session +
+          "/contexts/get_alerts-followup ",
+        lifespanCount: 0
+      }
+    ]
+  });
 
+}
           return response.json({
             fulfillmentText: "We found the below flight for you",
 
@@ -456,7 +490,7 @@ router.post("/dialog", (request, response) => {
             fulfillmentText: "Alert deleted",
             payload: {
               google: {
-                expectUserResponse: false,
+                expectUserResponse: true,
                 richResponse: {
                   items: [
                     {
@@ -464,6 +498,12 @@ router.post("/dialog", (request, response) => {
                         textToSpeech:
                           "You will stop receiving email for alertID" +
                           request.body.queryResult.parameters.alert_id
+                      }
+                    },
+                    {
+                      simpleResponse: {
+                        textToSpeech:
+                          "Do you want to search another flight or get all alerts"
                       }
                     }
                   ]
