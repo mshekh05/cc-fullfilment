@@ -70,14 +70,44 @@ router.post("/dialog", (request, response) => {
         .substring(0, 10)
         .replace("-", "")
         .replace("-", "");
+        try{
       var sourceIata = airports.findWhere({ city: source }).get("iata");
       var destinationIata = airports
         .findWhere({ city: destination })
         .get("iata");
-
-      if (sourceIata == "" || destinationIata == "") {
+        }
+     catch{
         return response.json({
-          fulfillmentText: "Seems like some problem. Speak again."
+          fulfillmentText: "There was an error in your search. Invalid source or destination.",
+          payload: {
+            google: {
+              expectUserResponse: true,
+              richResponse: {
+                items: [
+                  {
+                    simpleResponse: {
+                      textToSpeech:
+                      "There was an error in your search. Invalid source or destination."
+                    }
+                  },
+                  {
+                    simpleResponse: {
+                      textToSpeech:
+                        "Do you want to Search a flight or Get all alerts?"
+                    }
+                  }
+                ]
+              }
+            }
+          },
+          outputContexts: [
+            {
+              name:
+                request.body.session +
+                "/contexts/option1-flightsearch-final-followup",
+              lifespanCount: 0
+            }
+          ]
         });
       }
       const url =
