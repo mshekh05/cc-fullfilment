@@ -107,7 +107,13 @@ router.post("/dialog", (request, response) => {
                       {
                         simpleResponse: {
                           textToSpeech:
-                            "No Flight Found"
+                            "No Flight Found."
+                        }
+                      },
+                      {
+                        simpleResponse: {
+                          textToSpeech:
+                            "Do you want to Search a flight or Get all alerts?"
                         }
                       }
                     ]
