@@ -372,7 +372,7 @@ router.post("/dialog", (request, response) => {
                           simpleResponse: {
                             textToSpeech:
                               "You will start receiving email on " +
-                              res.data.email +
+                              res.data.email + " please wait for an email confirmation"+
                               ". Do you want to search another flight or Get all alerts?"
                           }
                         }
