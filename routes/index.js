@@ -97,7 +97,7 @@ router.post("/dialog", (request, response) => {
           // res.send(getMinimumAFlight(res.data.data.onwardflights))
           // console.log();
           // if (res.data.data.error != null)
-          console.log(res.data.data.error)
+          console.log(res)
           if (res.data.data.onwardflights.length === 0){
             return response.json({
               fulfillmentText: "No Flight Found",
