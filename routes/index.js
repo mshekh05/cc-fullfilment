@@ -76,7 +76,7 @@ router.post("/dialog", (request, response) => {
         .findWhere({ city: destination })
         .get("iata");
         }
-     catch{
+     catch(error){
         return response.json({
           fulfillmentText: "There was an error in your search. Invalid source or destination.",
           payload: {
