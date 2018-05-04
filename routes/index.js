@@ -260,89 +260,37 @@ router.post("/dialog", (request, response) => {
     .get(url)
     .then(res => {
       console.log(res.data) 
+      var data = res.data
+      console.log(length(res.data))
 
 
+      return response.json({
+        fulfillmentText: "We found the below flight for you",
 
-      // return response.json({
-      //   fulfillmentText: "We found the below flight for you",
-
-      //   payload: {
-      //     google: {
-      //       expectUserResponse: true,
-      //       richResponse: {
-      //         items: [
-      //           {
-      //             simpleResponse: {
-      //               textToSpeech:
-      //                 "Below are all the alert. Please Tap for deletion. "
-      //             }
-      //           }
-      //         ]
-      //       },
-      //       systemIntent: {
-      //         intent: "actions.intent.OPTION",
-      //         data: {
-      //           "@type":
-      //             "type.googleapis.com/google.actions.v2.OptionValueSpec",
-      //             listSelect: {
-      //             items: [
-      //               {
-      //                 optionInfo: { key: "3LSQgtA4OOxrttH2KfW1" },
-      //                 description:
-      //                   "PHX to BOS on 20180701 for a low fare of 217.16",
-      //                 image: {
-      //                   url: "https://picsum.photos/232/128/?random",
-      //                   accessibilityText: "3LSQgtA4OOxrttH2KfW1"
-      //                 },
-      //                 title: "3LSQgtA4OOxrttH2KfW1"
-      //               },
-      //               {
-      //                 optionInfo: { key: "4FHHP9mlDEMObcLAi8Bs" },
-      //                 description:
-      //                   "PHX to LGA on 20180703 for a low fare of 158.84",
-      //                 image: {
-      //                   url: "https://picsum.photos/232/128/?random",
-      //                   accessibilityText: "4FHHP9mlDEMObcLAi8Bs"
-      //                 },
-      //                 title: "4FHHP9mlDEMObcLAi8Bs"
-      //               },
-      //               {
-      //                 optionInfo: { key: "R3ejMzXuRRw9X1XjKOUK" },
-      //                 description:
-      //                   "PHX to BOS on 20180722 for a low fare of 188.52",
-      //                 image: {
-      //                   url: "https://picsum.photos/232/128/?random",
-      //                   accessibilityText: "R3ejMzXuRRw9X1XjKOUK"
-      //                 },
-      //                 title: "R3ejMzXuRRw9X1XjKOUK"
-      //               },
-      //               {
-      //                 optionInfo: { key: "Xn3RJ7lSOewc61xyVNDx" },
-      //                 description:
-      //                   "PHX to LGA on 20180718 for a low fare of 154.47",
-      //                 image: {
-      //                   url: "https://picsum.photos/232/128/?random",
-      //                   accessibilityText: "Xn3RJ7lSOewc61xyVNDx"
-      //                 },
-      //                 title: "Xn3RJ7lSOewc61xyVNDx"
-      //               },
-      //               {
-      //                 optionInfo: { key: "t8d4UOlgH7fwJKBVoozo" },
-      //                 description:
-      //                   "PHX to LGA on 20180718 for a low fare of 154.47",
-      //                 image: {
-      //                   url: "https://picsum.photos/232/128/?random",
-      //                   accessibilityText: "t8d4UOlgH7fwJKBVoozo"
-      //                 },
-      //                 title: "t8d4UOlgH7fwJKBVoozo"
-      //               }
-      //             ]
-      //           }
-      //         }
-      //       }
-      //     }
-      //   }
-      // });
+        payload: {
+          google: {
+            expectUserResponse: true,
+            richResponse: {
+              items: [
+                {
+                  simpleResponse: {
+                    textToSpeech:
+                      "Below are all the alert. Please Tap for deletion. "
+                  }
+                }
+              ]
+            },
+            systemIntent: {
+              intent: "actions.intent.OPTION",
+              data: {
+                "@type":
+                  "type.googleapis.com/google.actions.v2.OptionValueSpec",
+                  listSelect: data
+              }
+            }
+          }
+        }
+      });
     })
     .catch(error => {
       console.log(error);
