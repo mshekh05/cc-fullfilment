@@ -285,7 +285,7 @@ router.post("/dialog", (request, response) => {
               data: {
                 "@type":
                   "type.googleapis.com/google.actions.v2.OptionValueSpec",
-                  listSelect:  {"items": [{ optionInfo: { key: "3LSQgtA4OOxrttH2KfW1" }, description: "PHX to BOS on 20180701 for a low fare of 217.16", image: { url:"https://picsum.photos/232/128/?random", accessibilityText: "3LSQgtA4OOxrttH2KfW1"}, title: "PHX => BOS"},{ optionInfo: { key: "4FHHP9mlDEMObcLAi8Bs" }, description: "PHX to LGA on 20180703 for a low fare of 158.84", image: { url:"https://picsum.photos/232/128/?random", accessibilityText: "4FHHP9mlDEMObcLAi8Bs"}, title: "PHX => LGA"},{ optionInfo: { key: "R3ejMzXuRRw9X1XjKOUK" }, description: "PHX to BOS on 20180722 for a low fare of 188.52", image: { url:"https://picsum.photos/232/128/?random", accessibilityText: "R3ejMzXuRRw9X1XjKOUK"}, title: "PHX => BOS"},{ optionInfo: { key: "Xn3RJ7lSOewc61xyVNDx" }, description: "PHX to LGA on 20180718 for a low fare of 154.47", image: { url:"https://picsum.photos/232/128/?random", accessibilityText: "Xn3RJ7lSOewc61xyVNDx"}, title: "PHX => LGA"},{ optionInfo: { key: "t8d4UOlgH7fwJKBVoozo" }, description: "PHX to LGA on 20180718 for a low fare of 154.47", image: { url:"https://picsum.photos/232/128/?random", accessibilityText: "t8d4UOlgH7fwJKBVoozo"}, title: "PHX => LGA"}]}
+                  listSelect: data
               }
             }
           }
