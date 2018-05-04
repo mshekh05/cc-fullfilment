@@ -285,7 +285,7 @@ router.post("/dialog", (request, response) => {
               data: {
                 "@type":
                   "type.googleapis.com/google.actions.v2.OptionValueSpec",
-                  listSelect: data
+                  listSelect: JSON.parse(data)
               }
             }
           }
