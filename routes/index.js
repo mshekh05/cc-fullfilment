@@ -4,7 +4,7 @@ var airports = require("airport-codes");
 const axios = require("axios");
 var admin = require("firebase-admin");
 const functions = require("firebase-functions");
-var usd = 66.62;
+var usd = 66.76;
 // admin.initializeApp(functions.config().firebase);
 // var db = admin.firestore();
 // const url = 'https://developer.goibibo.com/api/search/?app_id=738f476c&app_key=f680503962623e838c52be41f0094b69&source='+source+'&destination='+destination+'&dateofdeparture=20180719&seatingclass=E&adults=1&children=0&infants=0&counter=100'
