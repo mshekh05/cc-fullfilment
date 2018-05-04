@@ -97,9 +97,43 @@ router.post("/dialog", (request, response) => {
           // res.send(getMinimumAFlight(res.data.data.onwardflights))
           console.log(res.data.data);
           if (res.data.data.error!= '' ){
-            console.log(res.data.data.error);
+            console.log(res.data.data.Error);
           return response.json({
             fulfillmentText: "There was an error in your search "+ res.data.data.Error
+          });
+
+
+          return response.json({
+            fulfillmentText:  "There was an error in your search "+ res.data.data.Error,
+            payload: {
+              google: {
+                expectUserResponse: true,
+                richResponse: {
+                  items: [
+                    {
+                      simpleResponse: {
+                        textToSpeech:
+                        "There was an error in your search "+ res.data.data.Error
+                      }
+                    },
+                    {
+                      simpleResponse: {
+                        textToSpeech:
+                          "Do you want to Search a flight or Get all alerts?"
+                      }
+                    }
+                  ]
+                }
+              }
+            },
+            outputContexts: [
+              {
+                name:
+                  request.body.session +
+                  "/contexts/option1-flightsearch-final-followup",
+                lifespanCount: 0
+              }
+            ]
           });
 
           }
