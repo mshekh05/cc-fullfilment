@@ -71,18 +71,22 @@ router.post("/dialog", (request, response) => {
         .replace("-", "")
         .replace("-", "");
       try {
-        if (destination === "San Jose") {
-          destinationIata = "SJC";
-        } else {
-          var destinationIata = airports
-            .findWhere({ city: destination })
-            .get("iata");
-        }
-        if (source === "San Jose") {
-          sourceIata = "SJC";
-        } else {
-          var sourceIata = airports.findWhere({ city: source }).get("iata");
-        }
+        // if (destination === "San Jose") {
+        //   destinationIata = "SJC";
+        // } else {
+        //   var destinationIata = airports
+        //     .findWhere({ city: destination })
+        //     .get("iata");
+        // }
+        // if (source === "San Jose") {
+        //   sourceIata = "SJC";
+        // } else {
+        //   var sourceIata = airports.findWhere({ city: source }).get("iata");
+        // }
+        var sourceIata = airports.findWhere({ city: source }).get("iata");
+        var destinationIata = airports
+        .findWhere({ city: destination })
+        .get("iata");
       } catch (error) {
         return response.json({
           fulfillmentText:
