@@ -98,9 +98,7 @@ router.post("/dialog", (request, response) => {
           console.log(res.data.data);
           if (res.data.data.error!= '' ){
             console.log(res.data.data.Error);
-          return response.json({
-            fulfillmentText: "There was an error in your search "+ res.data.data.Error
-          });
+          
 
 
           return response.json({
