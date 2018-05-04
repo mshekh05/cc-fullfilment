@@ -96,10 +96,10 @@ router.post("/dialog", (request, response) => {
         .then(res => {
           // res.send(getMinimumAFlight(res.data.data.onwardflights))
           console.log(res.data.data);
-          if (res.data.data.error != undefined||res.data.data.error!= null||res.data.data.error!= ''){
-            console.log("error ");
+          if (res.data.data.error!= '' ){
+            console.log(res.data.data.error);
           return response.json({
-            fulfillmentText: "There was an error in your search"+ res.data.data.error
+            fulfillmentText: "There was an error in your search "+ res.data.data.Error
           });
 
           }
