@@ -358,6 +358,8 @@ router.post("/dialog", (request, response) => {
               }
             )
             .then(res2 => {
+              sleep(1000);
+
               return response.json({
                 fulfillmentText:
                   "You start receiving email on " + res.data.email,
