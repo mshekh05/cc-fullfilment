@@ -264,6 +264,7 @@ router.post("/dialog", (request, response) => {
       console.log(Object.keys( data ).length)
 
 
+
       return response.json({
         fulfillmentText: "We found the below flight for you",
 
@@ -285,7 +286,7 @@ router.post("/dialog", (request, response) => {
               data: {
                 "@type":
                   "type.googleapis.com/google.actions.v2.OptionValueSpec",
-                  listSelect: JSON.parse(data)
+                  listSelect: data
               }
             }
           }
