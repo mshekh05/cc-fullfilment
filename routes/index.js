@@ -95,7 +95,30 @@ router.post("/dialog", (request, response) => {
         .get(url)
         .then(res => {
           // res.send(getMinimumAFlight(res.data.data.onwardflights))
-          console.log(res.data.data.onwardflights.length)
+          // console.log();
+          if (res.data.data.onwardflights.length === 0){
+            return response.json({
+              fulfillmentText: "we received something",
+              payload: {
+                google: {
+                  expectUserResponse: true,
+                  richResponse: {
+                    items: [
+                      {
+                        simpleResponse: {
+                          textToSpeech:
+                            "You will stop receiving email for alertID" +
+                            request.body.queryResult.parameters.alert_id
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            });
+
+          }
+          else {
           var minFlight = getMinimumFlight(res.data.data.onwardflights);
           var minFlightCost = minFlight.fare.grossamount / usd;
           minFlightCost = minFlightCost.toFixed(2);
@@ -179,13 +202,14 @@ router.post("/dialog", (request, response) => {
               }
             ]
           });
+        }
         })
         .catch(error => {
           console.log(error);
           return response.json({
             fulfillmentText: "Seems like some problem. Speak again."
           });
-        });
+        });}
     } else if (intent === "option1-flightsearch -final - yes") {
       console.log(request.body.queryResult.parameters);
       var destination = request.body.queryResult.parameters.destination;
@@ -255,86 +279,88 @@ router.post("/dialog", (request, response) => {
       });
     } else if (intent === "get_alerts") {
       var userID = request.body.originalDetectIntentRequest.payload.user.userId;
-      var url = "https://us-central1-cc-proj-1.cloudfunctions.net/get_all_alerts?userid="+userID
+      var url =
+        "https://us-central1-cc-proj-1.cloudfunctions.net/get_all_alerts?userid=" +
+        userID;
       axios
-    .get(url)
-    .then(res => {
-      console.log(res.data) 
-      var data = res.data
-      console.log(Object.keys( data ).length)
+        .get(url)
+        .then(res => {
+          console.log(res.data);
+          var data = res.data;
+          console.log(Object.keys(data).length);
 
+          return response.json({
+            fulfillmentText: "We found the below flight for you",
 
-
-      return response.json({
-        fulfillmentText: "We found the below flight for you",
-
-        payload: {
-          google: {
-            expectUserResponse: true,
-            richResponse: {
-              items: [
-                {
-                  simpleResponse: {
-                    textToSpeech:
-                      "Below are all the alert. Please Tap for deletion. "
+            payload: {
+              google: {
+                expectUserResponse: true,
+                richResponse: {
+                  items: [
+                    {
+                      simpleResponse: {
+                        textToSpeech:
+                          "Below are all the alert. Please Tap for deletion. "
+                      }
+                    }
+                  ]
+                },
+                systemIntent: {
+                  intent: "actions.intent.OPTION",
+                  data: {
+                    "@type":
+                      "type.googleapis.com/google.actions.v2.OptionValueSpec",
+                    listSelect: data
                   }
                 }
-              ]
-            },
-            systemIntent: {
-              intent: "actions.intent.OPTION",
-              data: {
-                "@type":
-                  "type.googleapis.com/google.actions.v2.OptionValueSpec",
-                  listSelect: data
               }
             }
-          }
-        }
-      });
-    })
-    .catch(error => {
-      console.log(error);
-      res.send("Error");
-    });
-  
-    
+          });
+        })
+        .catch(error => {
+          console.log(error);
+          res.send("Error");
+        });
     } else if (intent === "actions.intent.OPTION") {
       console.log(request.body);
 
-      var alertid = request.body.queryResult.parameters.alert_id
+      var alertid = request.body.queryResult.parameters.alert_id;
       var userID = request.body.originalDetectIntentRequest.payload.user.userId;
-      var url = "https://us-central1-cc-proj-1.cloudfunctions.net/deleteAlert?alertid="+alertid+"&userid="+userID
+      var url =
+        "https://us-central1-cc-proj-1.cloudfunctions.net/deleteAlert?alertid=" +
+        alertid +
+        "&userid=" +
+        userID;
       axios
-    .get(url)
-    .then(res => {
-
-      return response.json({
-        fulfillmentText: "we received something",
-        payload: {
-          google: {
-            expectUserResponse: true,
-            richResponse: {
-              items: [
-                {
-                  simpleResponse: {
-                    textToSpeech:
-                      "You will stop receiving email for alertID" +
-                      request.body.queryResult.parameters.alert_id
-                  }
+        .get(url)
+        .then(res => {
+          return response.json({
+            fulfillmentText: "we received something",
+            payload: {
+              google: {
+                expectUserResponse: true,
+                richResponse: {
+                  items: [
+                    {
+                      simpleResponse: {
+                        textToSpeech:
+                          "You will stop receiving email for alertID" +
+                          request.body.queryResult.parameters.alert_id
+                      }
+                    }
+                  ]
                 }
-              ]
+              }
             }
-          }
-        }
-      });
-    })  .catch(error => {
-      console.log(error);
-      return response.json({
-        fulfillmentText: "Seems like some problem. Speak again."
-      });
-    });
-  }
+          });
+        })
+        .catch(error => {
+          console.log(error);
+          return response.json({
+            fulfillmentText: "Seems like some problem. Speak again."
+          });
+        });
+    }
   } catch (error) {
     console.log(request.body.queryResult);
     console.log(error);
