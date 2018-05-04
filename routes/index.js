@@ -408,7 +408,7 @@ router.post("/dialog", (request, response) => {
           console.log(Object.keys(data.items).length);
 if (Object.keys(data.items).length=== 0){
   return response.json({
-    fulfillmentText:  "There was an error in your search. "+ res.data.data.Error,
+    fulfillmentText:                 "You have created no alerts"    ,
     payload: {
       google: {
         expectUserResponse: true,
@@ -433,8 +433,7 @@ if (Object.keys(data.items).length=== 0){
     outputContexts: [
       {
         name:
-          request.body.session +
-          "/contexts/get_alerts-followup ",
+          request.body.session + "/contexts/get_alerts-followup ",
         lifespanCount: 0
       }
     ]
