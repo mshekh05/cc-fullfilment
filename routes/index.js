@@ -96,7 +96,7 @@ router.post("/dialog", (request, response) => {
         .then(res => {
           // res.send(getMinimumAFlight(res.data.data.onwardflights))
           console.log(res.data.data);
-          if (res.data.data.Error!= '' ){
+          if (res.data.data.Error!= undefined ){
             console.log(res.data.data.Error);
           
 
