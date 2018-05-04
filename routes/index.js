@@ -477,7 +477,7 @@ else if (Object.keys(data.items).length===1 ){
                   data: {
                     "@type":
                       "type.googleapis.com/google.actions.v2.OptionValueSpec",
-                      carouselSelect: data
+                    listSelect: data
                   }
                 }
               }
