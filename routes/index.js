@@ -229,7 +229,7 @@ router.post("/dialog", (request, response) => {
                             textToSpeech:
                               "You will start receiving email on " +
                               res.data.email +
-                              "! Good Bye !"
+                              ". Do you want to search another flight or Get all alerts?"
                           }
                         }
                       ]
