@@ -209,7 +209,7 @@ router.post("/dialog", (request, response) => {
           return response.json({
             fulfillmentText: "Seems like some problem. Speak again."
           });
-        });}
+        });
     } else if (intent === "option1-flightsearch -final - yes") {
       console.log(request.body.queryResult.parameters);
       var destination = request.body.queryResult.parameters.destination;
@@ -338,7 +338,7 @@ router.post("/dialog", (request, response) => {
             fulfillmentText: "we received something",
             payload: {
               google: {
-                expectUserResponse: true,
+                expectUserResponse: false,
                 richResponse: {
                   items: [
                     {
