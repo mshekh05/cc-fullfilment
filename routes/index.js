@@ -26,7 +26,7 @@ var usd = 66.76;
 //     });
 // }
 router.get("/", (req, res) => {
-  res.render("index", { title: "Express" });
+  res.render("index", { title: "Express 1" });
 });
 
 // router.get("/:destination", (req, res) => {
@@ -71,10 +71,22 @@ router.post("/dialog", (request, response) => {
         .replace("-", "")
         .replace("-", "");
         try{
-      var sourceIata = airports.findWhere({ city: source }).get("iata");
-      var destinationIata = airports
+          if (destination === "San Jose"){
+            destinationIata = "SJC"
+          }
+          else{
+            var destinationIata = airports
         .findWhere({ city: destination })
         .get("iata");
+          }
+          if (source === "San Jose"){
+            sourceIata = "SJC"
+          }
+          else{
+            var sourceIata = airports.findWhere({ city: source }).get("iata");
+          }
+   
+      
         }
      catch(error){
         return response.json({
@@ -282,6 +294,25 @@ router.post("/dialog", (request, response) => {
                   // "userid":userID,
                   // "accesstoken":useremail
                 }
+              },
+              {
+                name:
+                  request.body.session +
+                  "/contexts/option1-flightsearch-more-followup",
+                lifespanCount: 0
+              },
+              {
+                name:
+                  request.body.session +
+                  "option1-flightsearch-followup",
+                lifespanCount: 0
+              }
+              ,
+              {
+                name:
+                  request.body.session +
+                  "option1-flightsearch-more-more-followup",
+                lifespanCount: 0
               }
             ]
           });
