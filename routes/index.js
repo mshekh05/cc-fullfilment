@@ -98,7 +98,7 @@ router.post("/dialog", (request, response) => {
           // console.log();
           if (res.data.data.onwardflights.length === 0){
             return response.json({
-              fulfillmentText: "we received something",
+              fulfillmentText: "No Flight Found",
               payload: {
                 google: {
                   expectUserResponse: true,
@@ -119,7 +119,15 @@ router.post("/dialog", (request, response) => {
                     ]
                   }
                 }
-              }
+              },
+              outputContexts: [
+                {
+                  name:
+                    request.body.session +
+                    "/contexts/option1-flightsearch-final-followup",
+                  lifespanCount: 0
+                }
+              ]
             });
 
           }
@@ -340,7 +348,7 @@ router.post("/dialog", (request, response) => {
         .get(url)
         .then(res => {
           return response.json({
-            fulfillmentText: "we received something",
+            fulfillmentText: "Alert deleted",
             payload: {
               google: {
                 expectUserResponse: false,
