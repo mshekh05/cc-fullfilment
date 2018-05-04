@@ -107,8 +107,7 @@ router.post("/dialog", (request, response) => {
                       {
                         simpleResponse: {
                           textToSpeech:
-                            "You will stop receiving email for alertID" +
-                            request.body.queryResult.parameters.alert_id
+                            "No Flight Found"
                         }
                       }
                     ]
