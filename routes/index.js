@@ -358,7 +358,7 @@ router.post("/dialog", (request, response) => {
               }
             )
             .then(res2 => {
-              sleep(1000);
+              // sleep(1000);
 
               return response.json({
                 fulfillmentText:
