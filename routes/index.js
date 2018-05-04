@@ -96,7 +96,7 @@ router.post("/dialog", (request, response) => {
         .then(res => {
           // res.send(getMinimumAFlight(res.data.data.onwardflights))
           console.log(res.data.data);
-          if (res.data.data.error!= '' ){
+          if (res.data.data.Error!= '' ){
             console.log(res.data.data.Error);
           
 
@@ -260,7 +260,7 @@ router.post("/dialog", (request, response) => {
         .catch(error => {
           console.log("HEre"+error);
           return response.json({
-            fulfillmentText:  "There was an error in your search ",
+            fulfillmentText:  "There was an error in your search. ",
             payload: {
               google: {
                 expectUserResponse: true,
