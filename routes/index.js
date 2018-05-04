@@ -70,27 +70,23 @@ router.post("/dialog", (request, response) => {
         .substring(0, 10)
         .replace("-", "")
         .replace("-", "");
-        try{
-          if (destination === "San Jose"){
-            destinationIata = "SJC"
-          }
-          else{
-            var destinationIata = airports
-        .findWhere({ city: destination })
-        .get("iata");
-          }
-          if (source === "San Jose"){
-            sourceIata = "SJC"
-          }
-          else{
-            var sourceIata = airports.findWhere({ city: source }).get("iata");
-          }
-   
-      
+      try {
+        if (destination === "San Jose") {
+          destinationIata = "SJC";
+        } else {
+          var destinationIata = airports
+            .findWhere({ city: destination })
+            .get("iata");
         }
-     catch(error){
+        if (source === "San Jose") {
+          sourceIata = "SJC";
+        } else {
+          var sourceIata = airports.findWhere({ city: source }).get("iata");
+        }
+      } catch (error) {
         return response.json({
-          fulfillmentText: "There was an error in your search. Invalid source or destination.",
+          fulfillmentText:
+            "There was an error in your search. Invalid source or destination.",
           payload: {
             google: {
               expectUserResponse: true,
@@ -99,7 +95,7 @@ router.post("/dialog", (request, response) => {
                   {
                     simpleResponse: {
                       textToSpeech:
-                      "There was an error in your search. Invalid source or destination."
+                        "There was an error in your search. Invalid source or destination."
                     }
                   },
                   {
@@ -122,6 +118,7 @@ router.post("/dialog", (request, response) => {
           ]
         });
       }
+
       const url =
         "https://developer.goibibo.com/api/search/?app_id=738f476c&app_key=f680503962623e838c52be41f0094b69&source=" +
         sourceIata +
@@ -138,49 +135,12 @@ router.post("/dialog", (request, response) => {
         .then(res => {
           // res.send(getMinimumAFlight(res.data.data.onwardflights))
           // console.log(res.data.data);
-          if (res.data.data.Error!= undefined ){
+          if (res.data.data.Error != undefined) {
             console.log(res.data.data.Error);
-          
 
-
-          return response.json({
-            fulfillmentText:  "There was an error in your search. "+ res.data.data.Error,
-            payload: {
-              google: {
-                expectUserResponse: true,
-                richResponse: {
-                  items: [
-                    {
-                      simpleResponse: {
-                        textToSpeech:
-                        "There was an error in your search. "+ res.data.data.Error
-                      }
-                    },
-                    {
-                      simpleResponse: {
-                        textToSpeech:
-                          "Do you want to Search a flight or Get all alerts?"
-                      }
-                    }
-                  ]
-                }
-              }
-            },
-            outputContexts: [
-              {
-                name:
-                  request.body.session +
-                  "/contexts/option1-flightsearch-final-followup",
-                lifespanCount: 0
-              }
-            ]
-          });
-
-          }
-          // console.log(res)
-          else if (res.data.data.onwardflights.length === 0){
             return response.json({
-              fulfillmentText: "No Flight Found",
+              fulfillmentText:
+                "There was an error in your search. " + res.data.data.Error,
               payload: {
                 google: {
                   expectUserResponse: true,
@@ -189,7 +149,8 @@ router.post("/dialog", (request, response) => {
                       {
                         simpleResponse: {
                           textToSpeech:
-                            "No Flight Found."
+                            "There was an error in your search. " +
+                            res.data.data.Error
                         }
                       },
                       {
@@ -211,117 +172,147 @@ router.post("/dialog", (request, response) => {
                 }
               ]
             });
-
           }
-          else {
-          var minFlight = getMinimumFlight(res.data.data.onwardflights);
-          var minFlightCost = minFlight.fare.grossamount / usd;
-          minFlightCost = minFlightCost.toFixed(2);
-          // minFlightCost = res.data.data.onwardflights[0].fare.grossamount
-          return response.json({
-            // "fulfillmentText": "We found the below flight for you",
-            fulfillmentMessages: [
-              {
-                card: {
-                  // "text":destination + "        " + source + "     " + minFlightCost,
-                  title:
-                    source +
-                    " to " +
-                    destination +
-                    " on " +
-                    date.substring(4, 6) +
-                    "-" +
-                    date.substring(6, 8) +
-                    "-" +
-                    date.substring(0, 4),
-                  subtitle: "Price: " + minFlightCost,
-                  imageUri:
-                    "https://images.trvl-media.com/media/content/expus/graphics/launch/home/tvly/150324_flights-hero-image_1330x742.jpg"
-                }
-              }
-            ],
-            payload: {
-              google: {
-                expectUserResponse: true,
-                richResponse: {
-                  items: [
-                    {
-                      simpleResponse: {
-                        textToSpeech: "We found the cheapest flight for you"
+          // console.log(res)
+          else if (res.data.data.onwardflights.length === 0) {
+            return response.json({
+              fulfillmentText: "No Flight Found",
+              payload: {
+                google: {
+                  expectUserResponse: true,
+                  richResponse: {
+                    items: [
+                      {
+                        simpleResponse: {
+                          textToSpeech: "No Flight Found."
+                        }
+                      },
+                      {
+                        simpleResponse: {
+                          textToSpeech:
+                            "Do you want to Search a flight or Get all alerts?"
+                        }
                       }
-                    },
-                    {
-                      basicCard: {
-                        formattedText: "Price: " + minFlightCost,
-                        image: {
-                          url:
-                            "https://images.trvl-media.com/media/content/expus/graphics/launch/home/tvly/150324_flights-hero-image_1330x742.jpg",
-                          accessibilityText:
-                            "Accessibility text describing the image"
-                        },
-                        title:
-                          source +
-                          " to " +
-                          destination +
-                          " on " +
-                          date.substring(4, 6) +
-                          "-" +
-                          date.substring(6, 8) +
-                          "-" +
-                          date.substring(0, 4)
-                      }
-                    },
-                    {
-                      simpleResponse: {
-                        textToSpeech: "Do You Want to Create a new alert"
-                      }
-                    }
-                  ]
-                }
-              }
-            },
-            outputContexts: [
-              {
-                name:
-                  request.body.session +
-                  "/contexts/option1-flightsearch-final-yes",
-                lifespanCount: 5,
-                parameters: {
-                  source: sourceIata,
-                  destination: destinationIata,
-                  date: date,
-                  price: minFlightCost
-                  // "userid":userID,
-                  // "accesstoken":useremail
+                    ]
+                  }
                 }
               },
-              {
-                name:
-                  request.body.session +
-                  "/contexts/option1-flightsearch-more-followup",
-                lifespanCount: 0
+              outputContexts: [
+                {
+                  name:
+                    request.body.session +
+                    "/contexts/option1-flightsearch-final-followup",
+                  lifespanCount: 0
+                }
+              ]
+            });
+          } else {
+            var minFlight = getMinimumFlight(res.data.data.onwardflights);
+            var minFlightCost = minFlight.fare.grossamount / usd;
+            minFlightCost = minFlightCost.toFixed(2);
+            // minFlightCost = res.data.data.onwardflights[0].fare.grossamount
+            console.log(minFlightCost)
+            return response.json({
+              // "fulfillmentText": "We found the below flight for you",
+              fulfillmentMessages: [
+                {
+                  card: {
+                    // "text":destination + "        " + source + "     " + minFlightCost,
+                    title:
+                      source +
+                      " to " +
+                      destination +
+                      " on " +
+                      date.substring(4, 6) +
+                      "-" +
+                      date.substring(6, 8) +
+                      "-" +
+                      date.substring(0, 4),
+                    subtitle: "Price: " + minFlightCost,
+                    imageUri:
+                      "https://images.trvl-media.com/media/content/expus/graphics/launch/home/tvly/150324_flights-hero-image_1330x742.jpg"
+                  }
+                }
+              ],
+              payload: {
+                google: {
+                  expectUserResponse: true,
+                  richResponse: {
+                    items: [
+                      {
+                        simpleResponse: {
+                          textToSpeech: "We found the cheapest flight for you"
+                        }
+                      },
+                      {
+                        basicCard: {
+                          formattedText: "Price: " + minFlightCost,
+                          image: {
+                            url:
+                              "https://images.trvl-media.com/media/content/expus/graphics/launch/home/tvly/150324_flights-hero-image_1330x742.jpg",
+                            accessibilityText:
+                              "Accessibility text describing the image"
+                          },
+                          title:
+                            source +
+                            " to " +
+                            destination +
+                            " on " +
+                            date.substring(4, 6) +
+                            "-" +
+                            date.substring(6, 8) +
+                            "-" +
+                            date.substring(0, 4)
+                        }
+                      },
+                      {
+                        simpleResponse: {
+                          textToSpeech: "Do You Want to Create a new alert"
+                        }
+                      }
+                    ]
+                  }
+                }
               },
-              {
-                name:
-                  request.body.session +
-                  "option1-flightsearch-followup",
-                lifespanCount: 0
-              }
-              ,
-              {
-                name:
-                  request.body.session +
-                  "option1-flightsearch-more-more-followup",
-                lifespanCount: 0
-              }
-            ]
-          });
-        }
+              outputContexts: [
+                {
+                  name:
+                    request.body.session +
+                    "/contexts/option1-flightsearch-final-yes",
+                  lifespanCount: 5,
+                  parameters: {
+                    source: sourceIata,
+                    destination: destinationIata,
+                    date: date,
+                    price: minFlightCost
+                    // "userid":userID,
+                    // "accesstoken":useremail
+                  }
+                },
+                {
+                  name:
+                    request.body.session +
+                    "/contexts/option1-flightsearch-more-followup",
+                  lifespanCount: 0
+                },
+                {
+                  name: request.body.session + "option1-flightsearch-followup",
+                  lifespanCount: 0
+                },
+                {
+                  name:
+                    request.body.session +
+                    "option1-flightsearch-more-more-followup",
+                  lifespanCount: 0
+                }
+              ]
+            });
+          }
         })
         .catch(error => {
-          console.log("HEre "+error);
+          console.log("HEre " + error);
           return response.json({
-            fulfillmentText:  "There was an error in your search. ",
+            fulfillmentText: "There was an error in your search. ",
             payload: {
               google: {
                 expectUserResponse: true,
@@ -329,8 +320,7 @@ router.post("/dialog", (request, response) => {
                   items: [
                     {
                       simpleResponse: {
-                        textToSpeech:
-                        "There was an error in your search "
+                        textToSpeech: "There was an error in your search "
                       }
                     },
                     {
@@ -352,12 +342,6 @@ router.post("/dialog", (request, response) => {
               }
             ]
           });
-
-          
-
-
-
-
         });
     } else if (intent === "option1-flightsearch -final - yes") {
       console.log(request.body.queryResult.parameters);
@@ -403,7 +387,8 @@ router.post("/dialog", (request, response) => {
                           simpleResponse: {
                             textToSpeech:
                               "You will start receiving email on " +
-                              res.data.email + " please wait for an email confirmation"+
+                              res.data.email +
+                              " please wait for an email confirmation" +
                               ". Do you want to search another flight or Get all alerts?"
                           }
                         }
@@ -439,56 +424,49 @@ router.post("/dialog", (request, response) => {
           console.log(res.data);
           var data = res.data;
           console.log(Object.keys(data.items).length);
-if (Object.keys(data.items).length=== 0){
-  return response.json({
-    fulfillmentText:                 "You have created no alerts"    ,
-    payload: {
-      google: {
-        expectUserResponse: true,
-        richResponse: {
-          items: [
-            {
-              simpleResponse: {
-                textToSpeech:
-                "You have created no alerts"
-              }
-            },
-            {
-              simpleResponse: {
-                textToSpeech:
-                  "Please say Search a flight to search and create new alert."
-              }
-            }
-          ]
-        }
-      }
-    },
-    outputContexts: [
-      {
-        name:
-          request.body.session + "/contexts/get_alerts-followup ",
-        lifespanCount: 0
-      }
-    ]
-  });
-
-}
-else if (Object.keys(data.items).length===1 ){
-  data.items.push(
-    {
-      "optionInfo": {
-          "key": "More"
-          
-      },
-      "title": "More",
-      // "description": "42 is an abundant number because the sum of its proper divisors 54 is greater…",
-      // "image": {
-      //     "url": "http://example.com/math_and_prime.jpg"
-      //     // "accessibilityText": "Math & prime numbers"
-      // }
-  }
-  )
-}
+          if (Object.keys(data.items).length === 0) {
+            return response.json({
+              fulfillmentText: "You have created no alerts",
+              payload: {
+                google: {
+                  expectUserResponse: true,
+                  richResponse: {
+                    items: [
+                      {
+                        simpleResponse: {
+                          textToSpeech: "You have created no alerts"
+                        }
+                      },
+                      {
+                        simpleResponse: {
+                          textToSpeech:
+                            "Please say Search a flight to search and create new alert."
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              outputContexts: [
+                {
+                  name: request.body.session + "/contexts/get_alerts-followup ",
+                  lifespanCount: 0
+                }
+              ]
+            });
+          } else if (Object.keys(data.items).length === 1) {
+            data.items.push({
+              optionInfo: {
+                key: "More"
+              },
+              title: "More"
+              // "description": "42 is an abundant number because the sum of its proper divisors 54 is greater…",
+              // "image": {
+              //     "url": "http://example.com/math_and_prime.jpg"
+              //     // "accessibilityText": "Math & prime numbers"
+              // }
+            });
+          }
           return response.json({
             fulfillmentText: "We found the below flight for you",
 
@@ -532,32 +510,31 @@ else if (Object.keys(data.items).length===1 ){
         "&userid=" +
         userID;
 
-if (alertid==="More"){
-  return response.json({
-    fulfillmentText: "Alert deleted",
-    payload: {
-      google: {
-        expectUserResponse: true,
-        richResponse: {
-          items: [
-            {
-              simpleResponse: {
-                textToSpeech:
-                  "You have no more alerts"
-              }
-            },
-            {
-              simpleResponse: {
-                textToSpeech:
-                  "Do you want to search another flight or get all alerts"
+      if (alertid === "More") {
+        return response.json({
+          fulfillmentText: "Alert deleted",
+          payload: {
+            google: {
+              expectUserResponse: true,
+              richResponse: {
+                items: [
+                  {
+                    simpleResponse: {
+                      textToSpeech: "You have no more alerts"
+                    }
+                  },
+                  {
+                    simpleResponse: {
+                      textToSpeech:
+                        "Do you want to search another flight or get all alerts"
+                    }
+                  }
+                ]
               }
             }
-          ]
-        }
+          }
+        });
       }
-    }
-  });
-}
 
       axios
         .get(url)
